@@ -18,7 +18,7 @@ def getSongList():
         SONG LIST.
 
     """
-    path = "C:/Users/apisl/OneDrive/Escritorio/CancionesSistChip"
+    path = "CancionesSistChip"
     os.chdir(path)
     return os.listdir()
 
