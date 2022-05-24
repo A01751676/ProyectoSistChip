@@ -5,11 +5,11 @@
 # Using tkinter, firstafull you need to create things and then you show that things
 
 from cgitb import text
-from tkinter import *       # importamos toda la libreria de 'tkinter' 
+from tkinter import *          # importamos toda la libreria de 'tkinter' 
 from tkinter import Button, Label,Tk,filedialog, ttk, Frame, PhotoImage
 from click import open_file
-import pygame               # Libreria para reproducir música
-from gtts import *          # Libreria para convertir texto a audio
+import pygame                  # Libreria para reproducir música
+from gtts import *             # Libreria para convertir texto a audio
 import random
 import mutagen
 
@@ -136,17 +136,279 @@ def travel_camara():
         nb.add(tab7, image = camara)
         nb.select(6)
 
-boton_mus = Button(tab1, image = musica, command = travel_musica). pack(padx = 10,pady = 10)
-boton_mapa = Button(tab1, image = mapa, command = travel_mapa). pack(padx = 30,pady = 10)
-boton_motor = Button(tab1, image = motor, command = travel_motor). pack(padx = 50,pady = 10) 
-boton_luces = Button(tab1, image = luces, command = travel_luces). pack(padx = 70,pady = 10)
-boton_telefono = Button(tab1, image = telefono, command = travel_telefono). pack(padx = 90,pady = 10)
-boton_camara = Button(tab1, image = camara, command = travel_camara). pack(padx = 110,pady = 10) 
+boton_mus = Button(tab1, image = musica, command = travel_musica).place(x=200, y=70)
+boton_mapa = Button(tab1, image = mapa, command = travel_mapa).place(x=600, y=70)
+boton_motor = Button(tab1, image = motor, command = travel_motor).place(x=200, y=190) 
+boton_luces = Button(tab1, image = luces, command = travel_luces).place(x=600, y=190)
+boton_telefono = Button(tab1, image = telefono, command = travel_telefono).place(x=200, y=310)
+boton_camara = Button(tab1, image = camara, command = travel_camara).place(x=600, y=310)
+
+
+
+
+
+
+
 
 # Components of TAB2 -------------------------------------------------------------------------------------
-boton_global1 = Button(tab2, image = musica, command = travel_global). pack(padx = 10,pady = 10)
+
+pygame.mixer.init()
+pygame.mixer.init(frequency = 44100)
+actual_song = ''
+direction = ''
+
+def open_file():
+    global direction, pos, n, actual_song
+    pos = 0
+    n = 0
+    direction = filedialog.askopenfilenames(initialdir = '/', title = 'Choose the song', filetype = (('mp3 files', '*.mp3'),('All files', '*.*')))
+
+    n = len(direction)
+    actual_song = direction[pos]
+
+    song_name = actual_song.split('/')
+    song_name = song_name[-1]
+
+lista = []
+for i in range (50,200,10):
+    lista.append(i)
+
+def start_playback():
+    global actual_song, direction, pos, n, actualizar 
+    bar1['value'] = random.choice(lista)
+    bar2['value'] = random.choice(lista)
+    bar3['value'] = random.choice(lista)
+    bar4['value'] = random.choice(lista)
+    bar5['value'] = random.choice(lista)
+    bar6['value'] = random.choice(lista)
+    bar7['value'] = random.choice(lista)
+    bar8['value'] = random.choice(lista)
+    bar9['value'] = random.choice(lista)
+    bar10['value'] = random.choice(lista)
+    bar11['value'] = random.choice(lista)
+    bar12['value'] = random.choice(lista)
+    bar13['value'] = random.choice(lista)
+    bar14['value'] = random.choice(lista)
+    bar15['value'] = random.choice(lista)
+    bar16['value'] = random.choice(lista)
+    bar17['value'] = random.choice(lista)
+    bar18['value'] = random.choice(lista)
+    bar19['value'] = random.choice(lista)
+    bar20['value'] = random.choice(lista)
+
+    actual_song = direction[pos]
+    song_name = actual_song.split('/')
+    song_name = song_name[-1]
+    name['text'] = song_name
+
+    time = pygame.mixer.music.get_pos()
+    x = int(int(time)*0.001)
+    tiempo['value'] = x
+
+    y = float(int(volumen.get())*0.1)
+    pygame.mixer.music.set_volume(y)
+    level['text'] = int(y*100)
+
+    audio = mutagen.File(actual_song)
+    log = audio.info.length
+    minutes, seconds = divmod(log, 60)
+
+    minutes, seconds = int(minutes), int (seconds)
+    tt = minutes * 60 + seconds
+    tiempo['maximum'] = tt      # time of song
+    texto['text'] = str(minutes) + ":" + str(seconds)
+
+    actualizar = tab2.after(100, start_playback)
+
+    if (x == tt):
+        tab2.after_cancel(actualizar)
+        texto['text'] = "00:00"
+        stop_effect()
+
+        if (pos != n):
+            pos = pos + 1
+            tab2.after(100, start_playback)
+            pygame.mixer.music.play()
+
+        if (pos == n):
+            pos = 0   
 
 
+def start():
+    global actual_song
+
+    pygame.mixer.music.load(actual_song)
+    pygame.mixer.music.play()
+    start_playback()
+
+def backward():
+    global pos, n
+
+    if (pos > 0):
+        pos = pos - 1
+    else:
+        pos = 0
+
+    amount['text'] = str(pos) + '/' + str(n)
+
+def forward():
+    global pos, n
+
+    if (pos == n - 1):
+        pos = 0
+    else: 
+        pos = pos + 1
+    
+    amount['text'] = str(pos) + '/' + str(n)
+
+def stop_effect():
+    bar1['value'] = 50
+    bar2['value'] = 60
+    bar3['value'] = 70
+    bar4['value'] = 80
+    bar5['value'] = 90
+    bar6['value'] = 100
+    bar7['value'] = 90
+    bar8['value'] = 80
+    bar9['value'] = 70
+    bar10['value'] = 60
+    bar11['value'] = 60
+    bar12['value'] = 70
+    bar13['value'] = 80
+    bar14['value'] = 90
+    bar15['value'] = 100
+    bar16['value'] = 90
+    bar17['value'] = 80
+    bar18['value'] = 70
+    bar19['value'] = 60
+    bar20['value'] = 50
+
+def stop():
+    global actualizar
+    pygame.mixer.music.stop()
+    tab2.after_cancel(actualizar)
+    stop_effect()
+
+def pause():
+    global actualizar
+    pygame.mixer.music.pause()
+    tab2.after_cancel(actualizar)
+    stop_effect()
+
+def continuar():
+    pygame.mixer.music.unpause()
+    tab2.after(100, start_playback)
+
+# Colores aleatorios
+color1 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
+color2 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
+color3 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
+color4 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
+
+# estyle
+estilo = ttk.Style()
+estilo.theme_use('clam')
+estilo.configure("Vertical.TProgressbar", foreground = color1, background = color2,troughcolor = 'black', bordercolor = 'black', lightcolor = color3, darkcolor = color4)
+
+# Bar Frames
+frame1 = Frame(tab2, bg = 'black', width = 800, height = 440)
+frame1.place(x=0, y=0)
+frame2 = Frame(tab2, bg = 'black', width = 800, height = 440)
+frame2.place(x=0, y=0)
+
+# Bars
+bar1 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 300, style = 'Vertical.TProgressbar')
+bar1.place(x=20, y=70)
+bar2 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 300, style = 'Vertical.TProgressbar')
+bar2.place(x=25, y=70)
+bar3 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 300, style = 'Vertical.TProgressbar')
+bar3.place(x=30, y=70)
+bar4 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar4.place(x=35, y=70)
+bar5 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar5.place(x=40, y=70)
+bar6 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar6.place(x=45, y=70)
+bar7 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar7.place(x=50, y=70)
+bar8 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar8.place(x=55, y=70)
+bar9 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar9.place(x=60, y=70)
+bar10 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar10.place(x=65, y=70)
+bar11 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar11.place(x=70, y=70)
+bar12 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar12.place(x=75, y=70)
+bar13 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar13.place(x=80, y=70)
+bar14 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar14.place(x=85, y=70)
+bar15 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar15.place(x=90, y=70)
+bar16 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar16.place(x=95, y=70)
+bar17 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar17.place(x=100, y=70)
+bar18 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar18.place(x=105, y=70)
+bar19 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar19.place(x=110, y=70)
+bar20 = ttk.Progressbar(frame1, orient = 'vertical', length = 200, maximum = 200, style = 'Vertical.TProgressbar')
+bar20.place(x=115, y=70)
+
+# Song information 
+
+style1 = ttk.Style()
+style1.theme_use('clam')
+style1.configure("Horizontal.TProgressbar", foreground = 'red', background = 'black', troughcolor = 'DarkOrchid1', bordercolor = '#970BD9', lightcolor = '#970BD9', darkcolor = 'black')
+
+tiempo = ttk.Progressbar(frame2, orient = 'horizontal', length = 390, mode = 'determinate',style="Horizontal.TProgressbar")
+tiempo.place(x = 120, y = 90)
+texto = Label(frame2, bg ='black', fg ='green2', width = 5)
+texto.place(x = 125, y = 90)
+
+name = Label(frame2, bg = 'black', fg = 'red', width = 55)
+name.place(x = 80, y = 90)
+amount = Label(frame2, bg = 'black', fg = 'green2')
+amount.place(x = 120, y = 70)
+
+image1 = PhotoImage(file = 'file.png')
+image2 = PhotoImage(file = 'play.png')
+image3 = PhotoImage(file = 'unpause.png')
+image4 = PhotoImage(file = 'pause.png')
+image5 = PhotoImage(file = 'continue.png')
+image6 = PhotoImage(file = 'backward.png')
+image7 = PhotoImage(file = 'forward.png')
+
+Button_open_file = Button(frame2, image = image1, bg = color1, command = open_file)
+Button_open_file.place(x = 20, y = 400)
+Button_start = Button(frame2, image = image2, bg = color2, command = start)
+Button_start.place(x = 40, y = 400)
+Button_stop = Button(frame2, image = image3, bg = color3, command = stop)
+Button_stop.place(x = 60, y = 400)
+Button_pause = Button(frame2, image = image4, bg = color4, command = pause)
+Button_pause.place(x = 80, y = 400)
+Button_continue = Button(frame2, image = image5, bg = color3, command = continuar)
+Button_continue.place(x = 100, y = 400)
+Button_backward = Button(frame2, image = image6, bg = color2, command = backward)
+Button_backward.place(x = 120, y = 400)
+Button_forward = Button(frame2, image = image7, bg = color1, command = forward)
+Button_forward.place(x = 140, y = 400)
+
+volumen = ttk.Scale(frame2, to = 10, from_ = 0, orient = 'horizontal', length = 90, style = 'Horizontal.TScale')
+volumen.place(x = 160, y = 90)
+
+style = ttk.Style()
+style.configure("Horizontal.TScale", bordercolor = 'green2', troughcolor = 'black', background = 'green2', foreground = 'green2', lightcolor = 'green2', darkcolor = 'black')
+
+level = Label(frame2, bg = 'black', fg = 'green2', width = 3)
+level.place(x = 180, y = 90)
+
+
+
+boton_global1 = Button(tab2, image = musica, command = travel_global).place(x=10, y=10)
 
 # Components of TAB3 -------------------------------------------------------------------------------------
 boton_global2 = Button(tab3, image = musica, command = travel_global). pack(padx = 10,pady = 10)
