@@ -45,3 +45,9 @@ rightBackDir = 35
 leftBackDir = 37
 frontLights = 40 
 foglamps = 38
+
+lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps)
+    
+IDLEnoche(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps)
