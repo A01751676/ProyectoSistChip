@@ -6,6 +6,7 @@ import time
 def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps):
     
+    GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM) #set pins number on Rpi
     GPIO.setup(redLights, GPIO.OUT)
     
@@ -128,7 +129,8 @@ rightBackDir = 35
 leftBackDir = 37
 frontLights = 40 
 foglamps = 38
+daynight = True
 
 lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps)
-    
+GPIO.output(frontLights, GPIO.HIGH)
