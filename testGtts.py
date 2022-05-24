@@ -15,7 +15,7 @@ from gtts import gTTS
 import os
   
 # The text that you want to convert to audio
-mytext = 'Hola Dofsi, te quiero wilis'
+mytext = 'Hola Emi, ¿cómo estas?, no lo se, ¿y tu?, ammmmmmmm???'
   
 # Language in which you want to convert
 language = 'es'
