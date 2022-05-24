@@ -7,7 +7,7 @@ def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps):
     
     GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM) #set pins number on Rpi
+    GPIO.setmode(GPIO.BOARD) #set pins number on Rpi
     GPIO.setup(redLights, GPIO.OUT)
     
     GPIO.setup(rightFrontDir, GPIO.OUT)
@@ -60,13 +60,13 @@ def intermitentes(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     GPIO.output(leftFrontDir, GPIO.HIGH)
     GPIO.output(rightBackDir, GPIO.HIGH)
     GPIO.output(leftBackDir, GPIO.HIGH)
-    time.sleep(500)
+    time.sleep(0.5)
     
     GPIO.output(rightFrontDir, GPIO.LOW)
     GPIO.output(leftFrontDir, GPIO.LOW)
     GPIO.output(rightBackDir, GPIO.LOW)
     GPIO.output(leftBackDir, GPIO.LOW)
-    time.sleep(500)
+    time.sleep(0.5)
 
 def rightDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
              leftBackDir, frontLights, foglamps, daynight):
@@ -76,11 +76,11 @@ def rightDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     
     GPIO.output(rightFrontDir, GPIO.HIGH)
     GPIO.output(rightBackDir, GPIO.HIGH)
-    time.sleep(500)
+    time.sleep(0.5)
     
     GPIO.output(rightFrontDir, GPIO.LOW)
     GPIO.output(rightBackDir, GPIO.LOW)
-    time.sleep(500)
+    time.sleep(0.5)
     
 def leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, daynight):
@@ -90,11 +90,11 @@ def leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     
     GPIO.output(leftFrontDir, GPIO.HIGH)
     GPIO.output(leftBackDir, GPIO.HIGH)
-    time.sleep(500)
+    time.sleep(0.5)
     
     GPIO.output(leftFrontDir, GPIO.LOW)
     GPIO.output(leftBackDir, GPIO.LOW)
-    time.sleep(500)
+    time.sleep(0.5)
 
 def reverse(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, daynight):
@@ -129,8 +129,10 @@ rightBackDir = 35
 leftBackDir = 37
 frontLights = 40 
 foglamps = 38
-daynight = True
+daynight = False
 
 lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps)
-GPIO.output(frontLights, GPIO.HIGH)
+
+leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, daynight)
