@@ -3,7 +3,6 @@ import pygame
 import random
 import mutagen
 
-print("hola mundo")
 
 # Start Tkinter for the interface
 root = Tk()
