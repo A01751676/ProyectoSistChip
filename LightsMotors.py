@@ -10,7 +10,7 @@ def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD) #set pins number on Rpi
-    GPIO.setmode(autoLightsPin, GPIO.OUT)
+    GPIO.setup(autoLightsPin, GPIO.IN)
     
     GPIO.setup(redLights, GPIO.OUT)
     
@@ -151,10 +151,10 @@ rightBackDir = 35
 leftBackDir = 37
 frontLights = 40 
 foglamps = 38
-autoLightsPin = ###
+autoLightsPin = 36
 
 lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
 
 leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
