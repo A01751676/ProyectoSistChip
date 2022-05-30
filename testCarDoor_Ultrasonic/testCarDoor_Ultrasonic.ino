@@ -129,8 +129,8 @@ int autoLights(){ // AUTOMATIC LIGHTS -----------------------------------
   Serial.print("l2: ");
   Serial.println(l2);
   int lf = (l1 + l2) / 2;
-  if (lf >150){return 0;} // LUCES APAGADAS
-  else{return 1;} // LUCES PRENDIDAS
+  if (lf >150){return LOW;} // LUCES APAGADAS
+  else{return HIGH;} // LUCES PRENDIDAS
 }
 // -------------------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------- START UP PARAMETERS -----------------------------------------------------------
@@ -145,7 +145,7 @@ void setup() {
 
   pinMode(buzzerPin, OUTPUT);
   
-  servoMotor.attach(6); // SERVO ON PIN 9
+  servoMotor.attach(6); // SERVO ON PIN 6
   servoMotor.write(0);
   
   pinMode(doorButton, INPUT);
@@ -190,7 +190,9 @@ void loop() {
 
   // TO CHECK ON LIGHT STATUS 
   int lights = autoLights();
-  digitalWrite(dayORnight, lights);
+  Serial.print("Day or Night: ");
+  Serial.println(lights);
+  digitalWrite(5, lights);
   
   // KEY READER HALT
   rfid.PICC_HaltA();
