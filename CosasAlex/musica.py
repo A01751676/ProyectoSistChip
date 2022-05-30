@@ -1,9 +1,6 @@
 from tkinter import Button, Label,Tk,filedialog, ttk, Frame, PhotoImage
-import pygame
-import random
-import mutagen
-
-
+from SongRI import *
+# a
 # Start Tkinter for the interface
 root = Tk()
 
@@ -272,3 +269,6 @@ level.grid(column = 8, row = 2)
 
 # Create an infinite loop
 root.mainloop()
+
+
+
