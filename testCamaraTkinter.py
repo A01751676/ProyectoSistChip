@@ -10,6 +10,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import cv2
 import numpy as np
+import RPi.GPIO as GPIO
 
 # Create an instance of TKinter Window or frame
 win = Tk()
@@ -24,9 +25,16 @@ cap= cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 420)
 
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+
+reverseStatusPin = 32
+GPIO.setup(reverseStatusPin, GPIO.OUT)
 # Define function to show frame
 def show_frames():
    # Get the latest frame and convert into Image
+   GPIO.output(reverseStatusPin, GPIO.HIGH)
+   
    cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
    
    linesPts = np.array([[0, 415], [90, 300], [710, 300], [800, 415]])
