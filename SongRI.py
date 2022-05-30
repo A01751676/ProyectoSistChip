@@ -96,7 +96,20 @@ def loadSong(song):
     return getSongData(song)
 
 def playSong(first):
+    """
+    DECIDE TO PLAY FIRST SONG OF UNPAUSE
 
+    Parameters
+    ----------
+    first : BOOL
+        TRUE WHEN FIRST SONG.
+
+    Returns
+    -------
+    bool
+        NEW INDICATOR FOR FIRST SONGS.
+
+    """
     if (first):
         mixer.music.play()
     else:
@@ -115,7 +128,24 @@ def pauseSong():
     mixer.music.pause()
     
 def playPrevious(songList, index):
+    """
+    PLAY PREVIOUS SONG
 
+    Parameters
+    ----------
+    songList : LIST
+        CONTANIS LIST OF MP3 FILES.
+    index : INT
+        INDEX FOR SONG LIST.
+
+    Returns
+    -------
+    INT
+        NEW SONG LIST INDEX.
+    DICT
+        SONG METADATA.
+
+    """
     mixer.music.stop()
     newIndex = index-1
     
@@ -129,7 +159,24 @@ def playPrevious(songList, index):
         return index, None
     
 def playNext(songList, index):
+    """
+    PLAY NEXT SONG
 
+    Parameters
+    ----------
+    songList : LIST
+        SONG LIST WITH MP3 FILES.
+    index : INT
+        SONG INDEX.
+
+    Returns
+    -------
+    INT
+        NEW SONG LIST INDEX.
+    DICT
+        SONG METADATA.
+
+    """
     mixer.music.stop()
     newIndex = index+1
     
@@ -143,6 +190,15 @@ def playNext(songList, index):
         return index, None
 
 def knowSongEnd():
+    """
+    DEFINE IF SONG HAS ENDED
+
+    Returns
+    -------
+    bool
+        TRUE WHEN SONG END.
+
+    """
     songEnd = mixer.music.get_pos()
     
     if (songEnd == -1):
@@ -150,4 +206,18 @@ def knowSongEnd():
     else:
         return False
 
+## -----------------------------------
+## REVISAR FUNCIONALIDAD DE ESTOS
+## -----------------------------------
+
+def getSongPos():
+    return mixer.music.get_pos()
+
+def setSongPosAndPlay(song,songPos):
+    mixer.music.load(song)
+    mixer.music.set_pos(songPos)
+    mixer.music.play()
+    
+def repeteOnce(index):
+    return index-1
 
