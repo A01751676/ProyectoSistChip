@@ -3,11 +3,15 @@
 import RPi.GPIO as GPIO
 import time
 
+## -------------------------------- LIGHTS -----------------------------------
+
 def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD) #set pins number on Rpi
+    GPIO.setup(autoLightsPin, GPIO.IN)
+    
     GPIO.setup(redLights, GPIO.OUT)
     
     GPIO.setup(rightFrontDir, GPIO.OUT)
@@ -42,7 +46,9 @@ def IDLEdia(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     GPIO.output(foglamps, GPIO.LOW)
 
 def dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
+    
+    daynight = GPIO.input(autoLightsPin)
     if (daynight):
         IDLEdia(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps)
@@ -51,10 +57,10 @@ def dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps)
 
 def intermitentes(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(rightFrontDir, GPIO.HIGH)
     GPIO.output(leftFrontDir, GPIO.HIGH)
@@ -69,10 +75,10 @@ def intermitentes(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     time.sleep(0.5)
 
 def rightDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-             leftBackDir, frontLights, foglamps, daynight):
+             leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-               leftBackDir, frontLights, foglamps, daynight)
+               leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(rightFrontDir, GPIO.HIGH)
     GPIO.output(rightBackDir, GPIO.HIGH)
@@ -83,10 +89,10 @@ def rightDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     time.sleep(0.5)
     
 def leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(leftFrontDir, GPIO.HIGH)
     GPIO.output(leftBackDir, GPIO.HIGH)
@@ -97,30 +103,46 @@ def leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     time.sleep(0.5)
 
 def reverse(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(redLights, GPIO.HIGH)
     GPIO.output(rightBackDir, GPIO.HIGH)
     GPIO.output(leftBackDir, GPIO.HIGH)
     
 def stopMovement(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(redLights, GPIO.HIGH)
 
 def fogLights(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight):
+                 leftBackDir, frontLights, foglamps, autoLightsPin):
     
     dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
     
     GPIO.output(foglamps, GPIO.HIGH)
+
+## -------------------------------- MOTORS -----------------------------------
+def moveForward():
+    pass
+
+def turnRight():
+    pass
+
+def turnLeft():
+    pass
+
+def stopMovement():
+    pass
+
+def moveBack():
+    pass
 
 redLights = 29
 rightFrontDir = 31
@@ -129,10 +151,10 @@ rightBackDir = 35
 leftBackDir = 37
 frontLights = 40 
 foglamps = 38
-daynight = False
+autoLightsPin = 36
 
 lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
 
 leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, daynight)
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
