@@ -10,11 +10,21 @@ from tkinter import Button, Label,Tk,filedialog, ttk, Frame, PhotoImage
 from click import open_file
 from gtts import *             # Libreria para convertir texto a audio
 import random
+from matplotlib import artist
 import mutagen
 # Librerias para mapa -----------------------------
 import tkintermapview
 # Libreria para musica
-from SongRI import *
+import pygame
+from pygame import *
+from SongRI2 import *
+# Libreria para mostrar la fecha
+import datetime as dt
+import time
+# Libreria para quitar fondo 
+import hashlib
+from PIL import Image, ImageTk
+from win32api import GetSystemMetrics
 
 # Start Tkinter fro the interface
 root = Tk()
@@ -24,6 +34,7 @@ root.title('Carrito')     # Define title
 root.geometry('800x440')  # configure sice of screen
 root.config(bg = 'black')
 root.resizable(0,0)  
+#root.wm_attributes('-transparentcolor','black')
 
 # We include tab panel
 nb = ttk.Notebook(root)
@@ -40,9 +51,9 @@ fondo_menu = PhotoImage(file = 'fondo_menu.png')
 fondo_musica = PhotoImage(file = 'fondo_musica.png')
 fondo_mapa = PhotoImage(file = 'fondo_mapa.png')
 fondo_motores = PhotoImage(file = 'fondo_motores.png')
-fondo_luces = PhotoImage(file = 'fondo_menu.png')
-fondo_telefono = PhotoImage(file = 'fondo_menu.png')
-fondo_camara = PhotoImage(file = 'fondo_menu.png')
+fondo_mensajes = PhotoImage(file = 'fondo_mensajes.png')
+fondo_telefono = PhotoImage(file = 'fondo_telefono.png')
+fondo_camara = PhotoImage(file = 'fondo_reversa.png')
 
 
 # Creating tabs
@@ -54,34 +65,14 @@ tab5 = Frame(nb, width = 500, height = 500)
 tab6 = Frame(nb, width = 500, height = 500)
 tab7 = Frame(nb, width = 500, height = 500)
 
-# Creamos canvas para fondos
-tab1bg = Canvas( tab1, width = 800, height = 700)
-tab1bg.place(x = 0, y = 0)
-tab1bg.create_image(0,0, image = fondo_menu, anchor = "nw")
-
 # pack Tabs
-tab1.pack(fill = "both", expand = 1)
-tab2.pack(fill = "both", expand = 1)
-tab3.pack(fill = "both", expand = 1)
-tab4.pack(fill = "both", expand = 1)
-tab5.pack(fill = "both", expand = 1)
-tab6.pack(fill = "both", expand = 1)
-tab7.pack(fill = "both", expand = 1)
-
-
-
-tab2bg = Label( tab2, image = fondo_musica) 
-tab2bg.place(x = 0, y = 0) 
-tab3bg = Label( tab3, image = fondo_mapa) 
-tab3bg.place(x = 0, y = 0) 
-tab4bg = Label( tab4, image = fondo_motores) 
-tab4bg.place(x = 0, y = 0) 
-tab5bg = Label( tab5, image = fondo_luces) 
-tab5bg.place(x = 0, y = 0) 
-tab6bg = Label( tab6, image = fondo_telefono) 
-tab6bg.place(x = 0, y = 0) 
-tab7bg = Label( tab7, image = fondo_camara) 
-tab7bg.place(x = 0, y = 0) 
+tab1.place(x = 0, y = 0) 
+tab2.place(x = 0, y = 0) 
+tab3.place(x = 0, y = 0) 
+tab4.place(x = 0, y = 0) 
+tab5.place(x = 0, y = 0)
+tab6.place(x = 0, y = 0) 
+tab7.place(x = 0, y = 0) 
 
 # Menú
 fondo_menu = PhotoImage(file = 'fondo_menu.png')
@@ -122,39 +113,39 @@ camara_sin_fondo = PhotoImage(file = 'reversa_sin_fondo.png')
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 
 # Menu
-fondo_menu_sub = fondo_menu.subsample(20)
+fondo_menu_sub = fondo_menu.subsample(2)
 menu_con_fondo_sub = menu_con_fondo.subsample(32)
-menu_sin_fondo_sub = menu_sin_fondo.subsample(20)
+menu_sin_fondo_sub = menu_sin_fondo.subsample(32)
 
 # Música
-fondo_musica_sub = fondo_musica.subsample(20)
+fondo_musica_sub = fondo_musica.subsample(2)
 musica_con_fondo_sub = musica_con_fondo.subsample(7)
-musica_sin_fondo_sub = musica_sin_fondo.subsample(20)
+musica_sin_fondo_sub = musica_sin_fondo.subsample(32)
 
 # Mapa
-fondo_mapa_sub = fondo_mapa.subsample(20)
+fondo_mapa_sub = fondo_mapa.subsample(2)
 mapa_con_fondo_sub = mapa_con_fondo.subsample(7)
-mapa_sin_fondo_sub = mapa_sin_fondo.subsample(20)
+mapa_sin_fondo_sub = mapa_sin_fondo.subsample(32)
 
 # Motores
-fondo_motores_sub = fondo_motores.subsample(20)
+fondo_motores_sub = fondo_motores.subsample(2)
 motores_con_fondo_sub = motores_con_fondo.subsample(7)
-motores_sin_fondo_sub = motores_sin_fondo.subsample(20)
+motores_sin_fondo_sub = motores_sin_fondo.subsample(32)
 
 # Mensajes
-fondo_mensajes_sub = fondo_mensajes.subsample(20)
+fondo_mensajes_sub = fondo_mensajes.subsample(2)
 mensajes_con_fondo_sub = mensajes_con_fondo.subsample(7)
-mensajes_sin_fondo_sub = mensajes_sin_fondo.subsample(20)
+mensajes_sin_fondo_sub = mensajes_sin_fondo.subsample(32)
 
 # Telefono
-fondo_telefono_sub = fondo_telefono.subsample(20)
+fondo_telefono_sub = fondo_telefono.subsample(2)
 telefono_con_fondo_sub = telefono_con_fondo.subsample(7)
-telefono_sin_fondo_sub = telefono_sin_fondo.subsample(20)
+telefono_sin_fondo_sub = telefono_sin_fondo.subsample(32)
 
 # Camara
-fondo_camara_sub = fondo_camara.subsample(20)
+fondo_camara_sub = fondo_camara.subsample(2)
 camara_con_fondo_sub = camara_con_fondo.subsample(7)
-camara_sin_fondo_sub = camara_sin_fondo.subsample(20)
+camara_sin_fondo_sub = camara_sin_fondo.subsample(32)
 
 # Adding tabs to screen 
 nb.add(tab1, image = menu_sin_fondo_sub)
@@ -164,6 +155,53 @@ nb.add(tab4, image = motores_sin_fondo_sub)
 nb.add(tab5, image = mensajes_sin_fondo_sub)
 nb.add(tab6, image = telefono_sin_fondo_sub)
 nb.add(tab7, image = camara_sin_fondo_sub)
+
+# Sabemos la fecha y hora
+date = dt.datetime.now()
+tiemp = time.strftime("%I:%M:%S %p")
+
+
+# Canvas para imagenes y labels sin fondo ----------------------------
+canvas_menu = Canvas(tab1)
+canvas_menu.create_image(0,0, image = fondo_menu_sub, anchor = 'nw')
+canvas_menu.pack(fill = "both", expand = 1)
+
+canvas_menu = Canvas(tab3)
+canvas_menu.create_image(0,0, image = fondo_mapa_sub, anchor = 'nw')
+canvas_menu.create_text(400,30, text = "MAPA Y POSICIÓN GEOGRÁFICA", font = ('Calibri',30))
+canvas_menu.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+canvas_menu.create_text(750,30, text = tiemp, font = ('Calibri',10))
+canvas_menu.pack(fill = "both", expand = 1)
+
+canvas_motores = Canvas(tab4)
+canvas_motores.create_image(0,0, image = fondo_motores_sub, anchor = 'nw')
+canvas_motores.create_text(400,30, text = "MOVER MOTORES DEL COCHE", font = ('Calibri',30))
+canvas_motores.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+canvas_motores.create_text(750,30, text = tiemp, font = ('Calibri',10))
+canvas_motores.pack(fill = "both", expand = 1)
+
+canvas_mensajes = Canvas(tab5)
+canvas_mensajes.create_image(0,0, image = fondo_mensajes_sub, anchor = 'nw')
+canvas_mensajes.create_text(400,30, text = "LEER MENSAJES NO LEIDOS", font = ('Calibri',30))
+canvas_mensajes.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+canvas_mensajes.create_text(750,30, text = tiemp, font = ('Calibri',10))
+canvas_mensajes.pack(fill = "both", expand = 1)
+
+canvas_telefono = Canvas(tab6)
+canvas_telefono.create_image(0,0, image = fondo_telefono_sub, anchor = 'nw')
+canvas_telefono.create_text(400,30, text = "LLAMAR A FAVORITOS", font = ('Calibri',30))
+canvas_telefono.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+canvas_telefono.create_text(750,30, text = tiemp, font = ('Calibri',10))
+canvas_telefono.pack(fill = "both", expand = 1)
+
+canvas_camara = Canvas(tab7)
+canvas_camara.create_image(0,0, image = fondo_camara_sub, anchor = 'nw')
+canvas_camara.create_text(400,30, text = "CAMARA Y SENSOR DE REVERSA", font = ('Calibri',30))
+canvas_camara.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+canvas_camara.create_text(750,30, text = tiemp, font = ('Calibri',10))
+canvas_camara.pack(fill = "both", expand = 1)
+
+
 
 nb.pack(expand = 1, fill ="both")
 
@@ -199,6 +237,7 @@ def travel_global():
         nb.hide(6)
         nb.select(0)
         status_global = False
+
 
 # Components of TAB1 = GLOBAL -------------------------------------------------------------------------------------
 # Global ----------------------------------------------------------------------------------------------------------
@@ -239,18 +278,12 @@ def travel_camara():
         nb.add(tab7, image = camara_sin_fondo_sub)
         nb.select(6)
 
-boton_mus = Button(tab1, image = musica_con_fondo_sub, borderwidth = 0 , command = travel_musica).place(x=70, y=20)
-boton_mapa = Button(tab1, image = mapa_con_fondo_sub, borderwidth = 0 , command = travel_mapa).place(x=320, y=20)
-boton_motor = Button(tab1, image = motores_con_fondo_sub, borderwidth = 0 , command = travel_motor).place(x=570, y=20) 
-boton_luces = Button(tab1, image = mensajes_con_fondo_sub, borderwidth = 0 , command = travel_luces).place(x=70, y=200)
-boton_telefono = Button(tab1, image = telefono_con_fondo_sub, borderwidth = 0 , command = travel_telefono).place(x=320, y=200)
-boton_camara = Button(tab1, image = camara_con_fondo_sub, borderwidth = 0 , command = travel_camara).place(x=570, y=200)
-
-
-
-
-
-
+boton_mus = Button(tab1, image = musica_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_musica).place(x=70, y=20)
+boton_mapa = Button(tab1, image = mapa_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_mapa).place(x=320, y=20)
+boton_motor = Button(tab1, image = motores_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_motor).place(x=570, y=20) 
+boton_luces = Button(tab1, image = mensajes_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_luces).place(x=70, y=200)
+boton_telefono = Button(tab1, image = telefono_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_telefono).place(x=320, y=200)
+boton_camara = Button(tab1, image = camara_con_fondo_sub, borderwidth = 0 , cursor='hand2', command = travel_camara).place(x=570, y=200)
 
 
 # Components of TAB2 -------------------------------------------------------------------------------------
@@ -268,29 +301,47 @@ songList = getSongList()
 songList = randomSongOrder(songList)
 songIndex = 0
 status = False # status 0 => pause, 1 => play
+imagen = False
+pos = 0
+n = 1
 
 # INITIATE MP3 OBJETCT WITH FIRST SONG
 initMP3Player()
 data = loadSong(songList [songIndex])
+actual_song = songList [songIndex]
+song_name = data["title"]
 
-def open_file():
-    global direction, pos, n, actual_song
-    pos = 0
-    n = 0
-    direction = filedialog.askopenfilenames(initialdir = '/', title = 'Choose the song', filetype = (('mp3 files', '*.mp3'),('All files', '*.*')))
-
-    n = len(direction)
-    actual_song = direction[pos]
-
-    song_name = actual_song.split('/')
-    song_name = song_name[-1]
-
+## MP3 PLAYER COMMANDS TO BUTTONS --------------------------------------------
 lista = []
 for i in range (50,200,10):
     lista.append(i)
 
+# PLAY PREVIOUS SONG
+def previous():
+    global data
+    global songIndex
+    path = "canciones"
+    os.chdir(path)
+    songIndex, data = playPrevious(songList, songIndex)
+    updateLabels()
+    os.chdir('..')
+
+# PLAY AND PAUSE SONG
+def play_pause():
+    global first
+    global status 
+    global actualizar   
+
+    if (status):
+        pauseSong()
+        stop_effect()
+        status = False
+    else:
+        first = playSong(first)
+        status = True
+
 def start_playback():
-    global actual_song, direction, pos, n, actualizar 
+    global actual_song, song_name, direction, pos, n, actualizar 
     bar1['value'] = random.choice(lista)
     bar2['value'] = random.choice(lista)
     bar3['value'] = random.choice(lista)
@@ -311,11 +362,6 @@ def start_playback():
     bar18['value'] = random.choice(lista)
     bar19['value'] = random.choice(lista)
     bar20['value'] = random.choice(lista)
-
-    actual_song = direction[pos]
-    song_name = actual_song.split('/')
-    song_name = song_name[-1]
-    name['text'] = song_name
 
     time = pygame.mixer.music.get_pos()
     x = int(int(time)*0.001)
@@ -344,39 +390,22 @@ def start_playback():
         if (pos != n):
             pos = pos + 1
             tab2.after(100, start_playback)
-            pygame.mixer.music.play()
 
         if (pos == n):
             pos = 0   
 
-
-def play():
-    global actual_song
-
-    pygame.mixer.music.load(actual_song)
-    pygame.mixer.music.play()
-    start_playback()
-
-def previous():
-    global pos, n
-
-    if (pos > 0):
-        pos = pos - 1
-    else:
-        pos = 0
-
-    amount['text'] = str(pos) + '/' + str(n)
-
+# PLAY NEXT SONG
 def next():
-    global pos, n
-
-    if (pos == n - 1):
-        pos = 0
-    else: 
-        pos = pos + 1
+    global data
+    global songIndex
+    path = "canciones"
+    os.chdir(path)
+    songIndex, data = playNext(songList, songIndex)
+    frame2.delete('all')
+    updateLabels()
+    os.chdir('..')
     
-    amount['text'] = str(pos) + '/' + str(n)
-
+    
 def stop_effect():
     bar1['value'] = 20
     bar2['value'] = 30
@@ -402,31 +431,46 @@ def stop_effect():
 def stop():
     global actualizar
     pygame.mixer.music.stop()
-    tab2.after_cancel(actualizar)
     stop_effect()
-
-def pause():
-    global actualizar
-    pygame.mixer.music.pause()
-    tab2.after_cancel(actualizar)
-    stop_effect()
-
-def continuar():
-    pygame.mixer.music.unpause()
-    tab2.after(100, start_playback)
+    travel_global()
 
 # estyle
 estilo = ttk.Style()
 estilo.theme_use('clam')
 estilo.configure("Vertical.TProgressbar", foreground = color1, background = color2, lightcolor = color3, darkcolor = color4)
 
-# Bar Frames
-frame1 = Frame(tab2, width = 800, height = 440)
-frame1.place(x=0, y=0)
-frame2 = Frame(tab2, width = 800, height = 440)
-frame2.place(x=0, y=0)
+def updateLabels():
+    global title, artista,album, Year, SampleR
+    try:
+        frame2.create_image(0,0, image = fondo_musica_sub, anchor = 'nw')
+        frame2.create_text(400,30, text = "REPRODUCTOR DE MÚSICA", font = ('Calibri',30))
+        frame2.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+        frame2.create_text(750,30, text = tiemp, font = ('Calibri',10)) 
+        frame2.create_text(250,215, text = data["title"], font = ('Calibri',12))
+        frame2.create_text(625,90, text = data["title"], font = ('Calibri',15))
+        frame2.create_text(625,105, text = data["artist"], font = ('Calibri',15))
+        frame2.create_text(625,135, text = data["album"], font = ('Calibri',12))
+        frame2.create_text(625,150, text = data["year"], font = ('Calibri',12))
+        frame2.create_text(625,165, text = data["sampleRate"], font = ('Calibri',12))
+    except: 
+        pass
 
-# Bars
+# Bar Frames 
+frame2 = Canvas(tab2)
+frame2.create_image(0,0, image = fondo_musica_sub, anchor = 'nw')
+frame2.create_text(400,30, text = "REPRODUCTOR DE MÚSICA", font = ('Calibri',30))
+frame2.create_text(725,15, text = f"{date:%A, %B %d, %Y}", font = ('Calibri',10))
+frame2.create_text(750,30, text = tiemp, font = ('Calibri',10))
+frame2.create_text(250,215, text = data["title"], font = ('Calibri',12))
+frame2.create_text(625,90, text = data["title"], font = ('Calibri',15))
+frame2.create_text(625,105, text = data["artist"], font = ('Calibri',15))
+frame2.create_text(625,135, text = data["album"], font = ('Calibri',12))
+frame2.create_text(625,150, text = data["year"], font = ('Calibri',12))
+frame2.create_text(625,165, text = data["sampleRate"], font = ('Calibri',12))
+frame2.pack(fill = "both", expand = 1)
+
+
+# Bars 
 bar1 = ttk.Progressbar(tab2, orient = 'vertical', length = 150, maximum = 300, style = 'Vertical.TProgressbar')
 bar1.place(x=50, y=50)
 bar2 = ttk.Progressbar(tab2, orient = 'vertical', length = 150, maximum = 300, style = 'Vertical.TProgressbar')
@@ -467,8 +511,8 @@ bar19 = ttk.Progressbar(tab2, orient = 'vertical', length = 150, maximum = 300, 
 bar19.place(x=410, y=50)
 bar20 = ttk.Progressbar(tab2, orient = 'vertical', length = 150, maximum = 300, style = 'Vertical.TProgressbar')
 bar20.place(x=430, y=50)
-# Song information 
 
+# Song information 
 style1 = ttk.Style()
 style1.theme_use('clam')
 style1.configure("Horizontal.TProgressbar", foreground = 'red', troughcolor = 'DarkOrchid1', bordercolor = '#970BD9', lightcolor = '#970BD9', darkcolor = 'black')
@@ -478,39 +522,53 @@ tiempo.place(x = 50, y = 230)
 texto = Label(frame2, fg ='green2', width = 5)
 texto.place(x = 440, y = 230)
 
-name = Label(frame2, fg = 'red', width = 55)
-name.place(x = 60, y = 210)
 amount = Label(frame2, fg = 'green2')
 amount.place(x = 120, y = 200)
 
 # Imágenes para el reproductor de música
-icono_previous = PhotoImage(file = 'icono_previous.png')     # previous
+os.chdir('..')
+icono_repeat = PhotoImage(file = 'icono_previous.png')     ## repeat
+icono_previous = PhotoImage(file = 'icono_previous.png')     ## previous
 icono_play = PhotoImage(file = 'icono_play.png')         # play
-icono_pause = PhotoImage(file = 'icono_pause.png')        # pause
+icono_pause = PhotoImage(file = 'icono_pausa.png')        # pause
 icono_next = PhotoImage(file = 'icono_next.png')         # next
 icono_random = PhotoImage(file = 'icono_next.png')       # random
 
-
-
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
+icono_repeat_sub = icono_previous.subsample(20)
 icono_previous_sub = icono_previous.subsample(20)
 icono_play_sub = icono_play.subsample(20)
 icono_pause_sub = icono_pause.subsample(20)
 icono_next_sub = icono_next.subsample(20)
 icono_random_sub = icono_random.subsample(20)
 
+def change_img():
+    global imagen
+
+    if (imagen):
+        play_pause_img = icono_play_sub
+        Button_play_pause = Button(frame2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img)
+        Button_play_pause.place(x = 220, y = 280)
+        imagen = False
+        play_pause()
+    else:
+        play_pause_img = icono_pause_sub
+        Button_play_pause = Button(frame2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img)
+        Button_play_pause.place(x = 220, y = 280)
+        imagen = True
+        play_pause()
 
 # Botones para el reproductor de música
-Button_previous = Button(frame2, image = icono_previous_sub, borderwidth = 0, bg = 'white', command = previous)
-Button_previous.place(x = 30, y = 280)
-Button_play = Button(frame2, image = icono_play_sub, borderwidth = 0, bg = 'white', command = play)
-Button_play.place(x = 100, y = 280)
-Button_pause = Button(frame2, image = icono_pause_sub, borderwidth = 0, bg = 'white', command = pause)
-Button_pause.place(x = 170, y = 280)
-Button_next = Button(frame2, image = icono_next_sub, borderwidth = 0, bg = 'white', command = next)
-Button_next.place(x = 240, y = 280)
-Button_random = Button(frame2, image = icono_random_sub, borderwidth = 0, bg = 'white', command = randomm)
-Button_random.place(x = 310, y = 280)
+Button_repeat = Button(frame2, image = icono_repeat_sub, borderwidth = 0, cursor='hand2', command = previous)
+Button_repeat.place(x = 80, y = 280)
+Button_previous = Button(frame2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous)
+Button_previous.place(x = 150, y = 280)
+Button_play_pause = Button(frame2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img)
+Button_play_pause.place(x = 220, y = 280)
+Button_next = Button(frame2, image = icono_next_sub, borderwidth = 0, cursor='hand2', command = next)
+Button_next.place(x = 290, y = 280)
+Button_random = Button(frame2, image = icono_random_sub, borderwidth = 0, cursor='hand2', command = next)
+Button_random.place(x = 360, y = 280)
 
 volumen = ttk.Scale(frame2, to = 10, from_ = 0, orient = 'horizontal', length = 90, style = 'Horizontal.TScale')
 volumen.place(x = 480, y = 210)
@@ -521,31 +579,16 @@ style.configure("Horizontal.TScale", bordercolor = 'green2', background = 'green
 level = Label(frame2, fg = 'green2', width = 3)
 level.place(x = 450, y = 210)
 
-# LABELS DEFINITION 
-ArtistLabel = Label(tab2, text = data["artist"])
-SongLabel = Label(tab2, text = data["title"])
-AlbumLabel = Label(tab2, text = data["album"])
-YearLabel = Label(tab2, text = data["year"])
-SampleRateLabel = Label(tab2, text = data["sampleRate"])
-
-# INCLUDE OBJECTS ON INTERFACE
-SongLabel.place(x = 450, y = 100)
-ArtistLabel.place(x = 450, y = 150)
-AlbumLabel.place(x = 450, y = 200)
-YearLabel.place(x = 450, y = 250)
-SampleRateLabel.place(x = 450, y = 300)
-
-
-boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop).place(x=10, y=10)
 
 # Components of TAB3 -------------------------------------------------------------------------------------
 # Mapa ---------------------------------------------------------------------------------------------------
 
 frame_map = LabelFrame(tab3)
 #frame_map.pack(padx = 20, pady = 20)
-frame_map.place(x = 60, y = 10)
+frame_map.place(x = 60, y = 60)
 
-map_widget = tkintermapview.TkinterMapView(frame_map, width = 700, height = 340, corner_radius = 0)
+map_widget = tkintermapview.TkinterMapView(frame_map, width = 700, height = 300, corner_radius = 0)
 map_widget.set_position(19.597111,-99.227274)
 map_widget.set_zoom(16)
 
@@ -555,7 +598,7 @@ marker_1 = map_widget.set_marker(19.597111,-99.227274, text="Carrito")
 map_widget.pack()
 
 
-boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 # Components of TAB4 -------------------------------------------------------------------------------------
 # MOTOR --------------------------------------------------------------------------------------------------
 
@@ -571,10 +614,10 @@ right_con_fondo = PhotoImage(file = 'musica_con_fondo.png')          # Derecha
 left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')           # Izquierda
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
-adelante_con_fondo_sub = adelante_con_fondo.subsample(20)
-reversa_con_fondo_sub = reversa_con_fondo.subsample(20)
-derecha_con_fondo_sub = derecha_con_fondo.subsample(20)
-izquierda_con_fondo_sub = izquierda_con_fondo.subsample(20)
+adelante_con_fondo_sub = adelante_con_fondo.subsample(7)
+reversa_con_fondo_sub = reversa_con_fondo.subsample(7)
+derecha_con_fondo_sub = derecha_con_fondo.subsample(7)
+izquierda_con_fondo_sub = izquierda_con_fondo.subsample(7)
 front_con_fondo_sub = front_con_fondo.subsample(20)
 back_con_fondo_sub = back_con_fondo.subsample(20)
 stopp_con_fondo_sub = stopp_con_fondo.subsample(20)
@@ -624,24 +667,35 @@ elif(velocidad == 3):
 elif(velocidad == 4):
     print("stop")
 
-adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, command = frontt).place(x=175, y=50)
-derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, command = right).place(x=300, y=150)
-izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, command = left).place(x=50, y=150)
-reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, command = backward).place(x=175, y=250)
+adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt).place(x=325, y=55)
+derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right).place(x=495, y=135)
+izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left).place(x=155, y=135)
+reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward).place(x=325, y=225)
 
-boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 # Components of TAB5 -------------------------------------------------------------------------------------
-# LUCES --------------------------------------------------------------------------------------------------
+# MENSAJES --------------------------------------------------------------------------------------------------
 
-boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=80)
+mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=150)
+mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=220)
+mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=290)
+
+boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 # Components of TAB6 -------------------------------------------------------------------------------------
 # TELEFONO -----------------------------------------------------------------------------------------------
 
-boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+twilio = Button(tab6, text= " TWILIO ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=80)
+Contacto2 = Button(tab6, text= " Contacto 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=150)
+Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=220)
+Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=290)
+
+boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 # Components of TAB7 -------------------------------------------------------------------------------------
 # CAMARA -------------------------------------------------------------------------------------------------
 
-boton_global6 = Button(tab7, image = menu_con_fondo_sub, borderwidth = 0, command = travel_global).place(x=10, y=10)
+
+boton_global6 = Button(tab7, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 
 
 
