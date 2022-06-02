@@ -18,7 +18,7 @@ def getSongList():
         SONG LIST.
 
     """
-    path = "CancionesSistChip"
+    path = "canciones"
     os.chdir(path)
     return os.listdir()
 

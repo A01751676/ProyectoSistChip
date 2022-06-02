@@ -5,6 +5,15 @@ import time
 
 ## -------------------------------- LIGHTS -----------------------------------
 
+redLights = 29
+rightFrontDir = 31
+leftFrontDir = 33
+rightBackDir = 35
+leftBackDir = 37
+frontLights = 40 
+foglamps = 38
+autoLightsPin = 36
+
 def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, autoLightsPin):
     
@@ -143,15 +152,6 @@ def stopMovement():
 
 def moveBack():
     pass
-
-redLights = 29
-rightFrontDir = 31
-leftFrontDir = 33
-rightBackDir = 35
-leftBackDir = 37
-frontLights = 40 
-foglamps = 38
-autoLightsPin = 36
 
 lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, autoLightsPin)
