@@ -58,7 +58,8 @@ def dayORnight(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, autoLightsPin):
     
     daynight = GPIO.input(autoLightsPin)
-    if (daynight):
+    print(daynight)
+    if (daynight == 0):
         IDLEdia(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps)
     else:

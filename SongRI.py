@@ -215,8 +215,12 @@ def getSongPos():
 
 def setSongPosAndPlay(song,songPos):
     mixer.music.load(song)
-    mixer.music.set_pos(songPos)
-    mixer.music.play()
+    playSong(True)
+    mixer.music.rewind()
+    print(songPos)
+    mixer.music.set_pos(round(songPos))
+    print(mixer.music.get_pos())
+    
     
 def repeteOnce(index):
     return index-1
