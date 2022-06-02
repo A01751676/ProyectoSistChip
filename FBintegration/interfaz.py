@@ -19,6 +19,7 @@ import geocoder
 import pygame
 from pygame import *
 from SongRI2 import *
+#from LightsMotors2 import *
 # Libreria para mostrar la fecha
 import datetime as dt
 import time
@@ -32,7 +33,6 @@ import numpy as np
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
 
-
 # Start Tkinter fro the interface
 root = Tk()
 
@@ -41,6 +41,13 @@ root.title('Carrito')     # Define title
 root.geometry('800x440')  # configure sice of screen
 root.config(bg = 'black')
 root.resizable(0,0)  
+
+# Rutas a directorios
+canciones = "CancionesSistChip"
+imagen = "Imagenes_carrito"
+cosas_Alex = "CosasAlex"
+
+os.chdir(imagen)
 root.iconbitmap('icono_lisa.ico')
 #root.wm_attributes('-transparentcolor','black')
 
@@ -299,6 +306,8 @@ pygame.mixer.init(frequency = 44100)
 actual_song = ''
 direction = ''
 
+os.chdir('..')
+os.chdir('CosasAlex')
 ## --------------------------------------
 ## GLOBAL VARIABLES FOR MP3 PLAYER
 first = True
@@ -372,11 +381,13 @@ def previous():
     global data
     global songIndex
     stop_effect()
-    path = "canciones"
-    os.chdir(path)
+
+    os.chdir('..')
+    os.chdir(canciones)
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
     os.chdir('..')
+
     start_playback()
 
 # PLAY AND PAUSE SONG
@@ -399,12 +410,14 @@ def next():
     global data
     global songIndex
     stop_effect()
-    path = "canciones"
-    os.chdir(path)
+
+    os.chdir('..')
+    os.chdir(canciones)
     songIndex, data = playNext(songList, songIndex)
     frame2.delete('all')
     updateLabels()
     os.chdir('..')
+
     start_playback()
 
 def rewind():
@@ -413,14 +426,16 @@ def rewind():
 def randomorder():
     global first, songList, randomsongList, songIndex,  data
     mixer.music.stop()
-    path = "canciones"
-    os.chdir(path)
+
+    os.chdir('..')
+    os.chdir(canciones)
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
     frame2.delete('all')
     updateLabels()
     os.chdir('..')
+
     start_playback()
     
 
@@ -533,7 +548,9 @@ style1.theme_use('clam')
 style1.configure("Horizontal.TProgressbar", foreground = 'red', troughcolor = 'DarkOrchid1', bordercolor = '#970BD9', lightcolor = '#970BD9', darkcolor = 'black')
 
 # Imágenes para el reproductor de música
+
 os.chdir('..')
+os.chdir(imagen)
 icono_rewind = PhotoImage(file = 'icono_rewind.png')       # rewind
 icono_repeat = PhotoImage(file = 'icono_repetir.png')      # repeat
 icono_previous = PhotoImage(file = 'icono_previous.png')   # previous
@@ -541,6 +558,8 @@ icono_play = PhotoImage(file = 'icono_play.png')           # play
 icono_pause = PhotoImage(file = 'icono_pausa.png')         # pause
 icono_next = PhotoImage(file = 'icono_next.png')           # next
 icono_random = PhotoImage(file = 'icono_random.png')       # random
+os.chdir('..')
+os.chdir(cosas_Alex)
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 icono_rewind_sub = icono_rewind.subsample(7)
@@ -572,7 +591,7 @@ Button_repeat = Button(frame2, image = icono_repeat_sub, borderwidth = 0, cursor
 Button_repeat.place(x = 110, y = 290)
 Button_previous = Button(frame2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous)
 Button_previous.place(x = 170, y = 270)
-Button_rewind = Button(frame2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = previous)
+Button_rewind = Button(frame2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = rewind)
 Button_rewind.place(x = 270, y = 245)
 Button_play_pause = Button(frame2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img)
 Button_play_pause.place(x = 405, y = 245)
@@ -627,8 +646,8 @@ back_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Reversa
 stopp_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Parking
 right_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Derecha
 left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Izquierda
-icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png')    # Derecha
-icono_fog = PhotoImage(file = 'icono_fog.png')     # Izquierda
+icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png') # intermitentes
+icono_fog = PhotoImage(file = 'icono_fog.png')                     # Fog
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 adelante_con_fondo_sub = adelante_con_fondo.subsample(10)
@@ -640,9 +659,8 @@ back_con_fondo_sub = back_con_fondo.subsample(20)
 stopp_con_fondo_sub = stopp_con_fondo.subsample(20)
 right_con_fondo_sub = right_con_fondo.subsample(20)
 left_con_fondo_sub = left_con_fondo.subsample(20)
-icono_intermitentes_sub = icono_intermitentes.subsample(20)
-icono_fog_sub = icono_fog.subsample(20)
-
+icono_intermitentes_sub = icono_intermitentes.subsample(20);
+icono_fog_sub = icono_fog.subsample(20);
 
 # Variable global
 global velocidad
@@ -676,24 +694,20 @@ def backward():
     img_reversa = Label(tab4, image = back_con_fondo_sub)
     img_reversa.place(x=500, y=100)
 
-if (velocidad == 0):
-    print("stop")
-elif(velocidad == 1):
-    print("stop")
-elif(velocidad == 2):
-    print("stop")
-elif(velocidad == 3):
-    print("stop")
-elif(velocidad == 4):
-    print("stop")
+def intermitentes_ligths():
+    print('Hola');
+
+def fog_ligths():
+    print('Hola');
+
 
 adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt).place(x=225, y=55)
 derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right).place(x=395, y=135)
 izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left).place(x=75, y=135)
 reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward).place(x=225, y=215)
 
-intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = left).place(x=600, y=55)
-faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = backward).place(x=600, y=200)
+intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths).place(x=600, y=55)
+faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths).place(x=600, y=200)
 
 boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
 # Components of TAB5 -------------------------------------------------------------------------------------
@@ -758,7 +772,7 @@ boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor
 # Components of TAB6 -------------------------------------------------------------------------------------
 # TELEFONO -----------------------------------------------------------------------------------------------
 
-def llamada():
+def llamada_AlexN():
     # Your Account SID from twilio.com/console
     account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
     # Your Auth Token from twilio.com/console
@@ -771,9 +785,22 @@ def llamada():
     )
     print(call.sid)
 
+def llamada_AnaP():
+    # Your Account SID from twilio.com/console
+    account_sid = "AC10e4010f3e3006844e9d8aef19130a37"
+    # Your Auth Token from twilio.com/console
+    auth_token  = "9be6a29df31a87edbfb396e7f9877b0c"
+    client = Client(account_sid, auth_token)
+    call = client.calls.create(
+        to="+525510041137", 
+        from_="+18127220493",
+        url = "http://demo.twilio.com/docs/voice.xml"
+    )
+    print(call.sid)
 
-twilio = Button(tab6, text= " TWILIO ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada).place(x=120, y=80)
-Contacto2 = Button(tab6, text= " Contacto 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=150)
+
+AlexNu = Button(tab6, text= " Alex N ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AlexN).place(x=120, y=80)
+AnaP = Button(tab6, text= " Ana P ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AnaP).place(x=120, y=150)
 Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=220)
 Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=290)
 
@@ -799,8 +826,6 @@ reverseStatusPin = 32
 def show_frames():
    # Get the latest frame and convert into Image
    #GPIO.output(reverseStatusPin, GPIO.HIGH)
-   
-
    cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
    
    linesPts = np.array([[0, 358], [75, 268], [565, 268], [640, 358]])
