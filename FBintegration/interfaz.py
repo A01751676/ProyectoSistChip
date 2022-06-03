@@ -43,12 +43,8 @@ root.config(bg = 'black')
 root.resizable(0,0)  
 
 # Rutas a directorios
-canciones = "CancionesSistChip"
-imagen = "Imagenes_carrito"
-cosas_Alex = "CosasAlex"
-
-os.chdir(imagen)
-root.iconbitmap('icono_lisa.ico')
+img_dir = "Imagenes_carrito"
+Front_B = "FBintegration"
 #root.wm_attributes('-transparentcolor','black')
 
 # We include tab panel
@@ -62,6 +58,7 @@ color3 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 color4 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 
 # Fondo Tab
+os.chdir(img_dir)
 fondo_menu = PhotoImage(file = 'fondo_menu.png')
 fondo_musica = PhotoImage(file = 'fondo_musica.png')
 fondo_mapa = PhotoImage(file = 'fondo_mapa.png')
@@ -69,7 +66,6 @@ fondo_motores = PhotoImage(file = 'fondo_motores.png')
 fondo_mensajes = PhotoImage(file = 'fondo_mensajes.png')
 fondo_telefono = PhotoImage(file = 'fondo_telefono.png')
 fondo_camara = PhotoImage(file = 'fondo_reversa.png')
-
 
 # Creating tabs
 tab1 = Frame(nb, width = 500, height = 500)
@@ -306,12 +302,10 @@ pygame.mixer.init(frequency = 44100)
 actual_song = ''
 direction = ''
 
-os.chdir('..')
-os.chdir('CosasAlex')
 ## --------------------------------------
 ## GLOBAL VARIABLES FOR MP3 PLAYER
 first = True
-songList = getSongList()
+songList = getSongList(canciones)
 songIndex = 0
 status = False # status 0 => pause, 1 => play
 imagen = False
@@ -382,11 +376,8 @@ def previous():
     global songIndex
     stop_effect()
 
-    os.chdir('..')
-    os.chdir(canciones)
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
-    os.chdir('..')
 
     start_playback()
 
@@ -411,12 +402,10 @@ def next():
     global songIndex
     stop_effect()
 
-    os.chdir('..')
-    os.chdir(canciones)
     songIndex, data = playNext(songList, songIndex)
     frame2.delete('all')
+
     updateLabels()
-    os.chdir('..')
 
     start_playback()
 
@@ -427,14 +416,12 @@ def randomorder():
     global first, songList, randomsongList, songIndex,  data
     mixer.music.stop()
 
-    os.chdir('..')
-    os.chdir(canciones)
     randomsongList= randomSongOrder(songList)
+
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
     frame2.delete('all')
     updateLabels()
-    os.chdir('..')
 
     start_playback()
     
@@ -550,7 +537,7 @@ style1.configure("Horizontal.TProgressbar", foreground = 'red', troughcolor = 'D
 # Imágenes para el reproductor de música
 
 os.chdir('..')
-os.chdir(imagen)
+os.chdir(img_dir)
 icono_rewind = PhotoImage(file = 'icono_rewind.png')       # rewind
 icono_repeat = PhotoImage(file = 'icono_repetir.png')      # repeat
 icono_previous = PhotoImage(file = 'icono_previous.png')   # previous
@@ -559,7 +546,7 @@ icono_pause = PhotoImage(file = 'icono_pausa.png')         # pause
 icono_next = PhotoImage(file = 'icono_next.png')           # next
 icono_random = PhotoImage(file = 'icono_random.png')       # random
 os.chdir('..')
-os.chdir(cosas_Alex)
+os.chdir(Front_B)
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 icono_rewind_sub = icono_rewind.subsample(7)
@@ -637,6 +624,9 @@ boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor
 # MOTOR --------------------------------------------------------------------------------------------------
 
 # Imágenes para el motor
+
+os.chdir('..')
+os.chdir(img_dir)
 adelante_con_fondo = PhotoImage(file = 'flecha_up.png')        # adelante
 reversa_con_fondo = PhotoImage(file = 'flecha_down.png')       # reversa
 derecha_con_fondo = PhotoImage(file = 'flecha_right.png')      # derecha
@@ -648,6 +638,8 @@ right_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Derecha
 left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Izquierda
 icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png') # intermitentes
 icono_fog = PhotoImage(file = 'icono_fog.png')                     # Fog
+os.chdir('..')
+os.chdir(Front_B)
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 adelante_con_fondo_sub = adelante_con_fondo.subsample(10)
