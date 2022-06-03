@@ -129,22 +129,6 @@ def fogLights(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     
     GPIO.output(foglamps, GPIO.HIGH)
 
-## -------------------------------- MOTORS -----------------------------------
-def moveForward():
-    pass
-
-def turnRight():
-    pass
-
-def turnLeft():
-    pass
-
-def stopMovement():
-    pass
-
-def moveBack():
-    pass
-
 redLights = 29
 rightFrontDir = 31
 leftFrontDir = 33
