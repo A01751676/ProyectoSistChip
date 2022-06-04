@@ -60,6 +60,7 @@ color_tab4 = '#008F39' # Motores
 color_tab5 = '#FF9900' # Mensajes
 color_tab6 = '#4169E1' # Llamadas
 color_tab7 = '#FFCD48' # Reversa
+text_color = '#FFFFFF' # Color del texto
 
 os.chdir(img_dir)
 
@@ -156,25 +157,29 @@ tiemp = time.strftime("%I:%M:%S %p")
 
 # Labels para texto ----------------------------
 
-titulo_musica = Label(tab2, text = "REPRODUCTOR DE MÚSICA", font = ('Calibri',30), background = color_tab2).place(x = 160,y = 5)
-fecha_musica = Label(tab2, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab2).place(x = 690,y = 5)
-hora_musica = Label(tab2, text = tiemp, font = ('Calibri',10), background = color_tab2).place(x = 710,y = 20)
+titulo_musica = Label(tab2, text = "REPRODUCTOR DE MÚSICA", font = ('Calibri',30), background = color_tab2, fg = text_color).place(x = 160,y = 5)
+fecha_musica = Label(tab2, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 690,y = 5)
+hora_musica = Label(tab2, text = tiemp, font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 710,y = 20)
+
+titulo_menu = Label(tab3, text = "MAPA Y POSICIÓN GEOGRÁFICA", font = ('Calibri',30), background = color_tab3, fg = text_color).place(x = 160,y = 5)
+fecha_menu = Label(tab3, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab3, fg = text_color).place(x = 690,y = 5)
+hora_menu = Label(tab3, text = tiemp, font = ('Calibri',10), background = color_tab3, fg = text_color).place(x = 710,y = 20)
 
 titulo_menu = Label(tab3, text = "MAPA Y POSICIÓN GEOGRÁFICA", font = ('Calibri',30), background = color_tab3).place(x = 160,y = 5)
 fecha_menu = Label(tab3, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab3).place(x = 690,y = 5)
 hora_menu = Label(tab3, text = tiemp, font = ('Calibri',10), background = color_tab3).place(x = 710,y = 20)
 
-titulo_motores = Label(tab4, text = "MOVER MOTORES DEL COCHE", font = ('Calibri',30), background = color_tab4).place(x = 160,y = 5)
-fecha_motores = Label(tab4, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab4).place(x = 690,y = 5)
-hora_motores = Label(tab4, text = tiemp, font = ('Calibri',10), background = color_tab4).place(x = 710,y = 20)
+titulo_motores = Label(tab4, text = "MOVER MOTORES DEL COCHE", font = ('Calibri',30), background = color_tab4, fg = text_color).place(x = 160,y = 5)
+fecha_motores = Label(tab4, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab4, fg = text_color).place(x = 690,y = 5)
+hora_motores = Label(tab4, text = tiemp, font = ('Calibri',10), background = color_tab4, fg = text_color).place(x = 710,y = 20)
 
-titulo_mensajes = Label(tab5, text = "LEER MENSAJES NO LEIDOS", font = ('Calibri',30), background = color_tab5).place(x = 160,y = 5)
-fecha_mensajes = Label(tab5, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab5).place(x = 690,y = 5)
-hora_mensajes = Label(tab5, text = tiemp, font = ('Calibri',10), background = color_tab5).place(x = 710,y = 20)
+titulo_mensajes = Label(tab5, text = "LEER MENSAJES NO LEIDOS", font = ('Calibri',30), background = color_tab5, fg = text_color).place(x = 160,y = 5)
+fecha_mensajes = Label(tab5, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab5, fg = text_color).place(x = 690,y = 5)
+hora_mensajes = Label(tab5, text = tiemp, font = ('Calibri',10), background = color_tab5, fg = text_color).place(x = 710,y = 20)
 
-titulo_telefono = Label(tab6, text = "LLAMAR A FAVORITOS", font = ('Calibri',30), background = color_tab6).place(x = 160,y = 5)
-fecha_telefono = Label(tab6, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab6).place(x = 690,y = 5)
-hora_telefono = Label(tab6, text = tiemp, font = ('Calibri',10), background = color_tab6).place(x = 710,y = 20)
+titulo_telefono = Label(tab6, text = "LLAMAR A FAVORITOS", font = ('Calibri',30), background = color_tab6, fg = text_color).place(x = 160,y = 5)
+fecha_telefono = Label(tab6, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab6, fg = text_color).place(x = 690,y = 5)
+hora_telefono = Label(tab6, text = tiemp, font = ('Calibri',10), background = color_tab6, fg = text_color).place(x = 710,y = 20)
 
 nb.pack(expand = 1, fill ="both")
 
@@ -210,7 +215,6 @@ def travel_global():
         nb.hide(6)
         nb.select(0)
         status_global = False
-
 
 # Components of TAB1 = GLOBAL -------------------------------------------------------------------------------------
 # Global ----------------------------------------------------------------------------------------------------------
@@ -341,22 +345,64 @@ def stop():
 def updateLabels():
     global titulo_cancion,artista_cancion,album_cancion,ano_cancion,rate_cancion,stereo_cancion
     try:
-        titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 70)
-        artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 90)
-        album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 110)
-        ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 130)
-        rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 150)
-        stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2).place(x = 600,y = 170)
+        titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 70)
+        artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 90)
+        album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 110)
+        ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 130)
+        rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 150)
+        stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 170)
     except: 
         pass
 
 # Labels de cancion
-titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 70)
-artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 90)
-album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 110)
-ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 130)
-rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2).place(x = 600,y = 150)
-stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2).place(x = 600,y = 170)
+titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 70)
+artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 90)
+album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 110)
+ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 130)
+rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 150)
+stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 170)
+
+# Bars 
+bar1 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar1.place(x=50, y=60)
+bar2 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar2.place(x=70, y=60)
+bar3 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar3.place(x=90, y=60)
+bar4 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar4.place(x=110, y=60)
+bar5 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar5.place(x=130, y=60)
+bar6 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar6.place(x=150, y=60)
+bar7 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar7.place(x=170, y=60)
+bar8 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar8.place(x=190, y=60)
+bar9 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar9.place(x=210, y=60)
+bar10 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar10.place(x=230, y=60)
+bar11 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar11.place(x=250, y=60)
+bar12 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar12.place(x=270, y=60)
+bar13 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar13.place(x=290, y=60)
+bar14 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar14.place(x=310, y=60)
+bar15 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar15.place(x=330, y=60)
+bar16 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar16.place(x=350, y=60)
+bar17 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar17.place(x=370, y = 60)
+bar18 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar18.place(x=390, y=60)
+bar19 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar19.place(x=410, y=60)
+bar20 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
+bar20.place(x=430, y=60)
 
 # Imágenes para el reproductor de música
 os.chdir(img_dir)
@@ -383,36 +429,33 @@ def change_img():
 
     if (imagen):
         play_pause_img = icono_play_sub
-        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
+        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
         Button_play_pause.place(x = 405, y = 245)
         imagen = False
         play_pause()
     else:
         play_pause_img = icono_pause_sub
-        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
+        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
         Button_play_pause.place(x = 405, y = 245)
         imagen = True
         play_pause()
 
 # Botones para el reproductor de música
-Button_repeat = Button(tab2, image = icono_repeat_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2)
+Button_repeat = Button(tab2, image = icono_repeat_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2, fg = text_color)
 Button_repeat.place(x = 110, y = 290)
-Button_previous = Button(tab2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous, background = color_tab2)
+Button_previous = Button(tab2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous, background = color_tab2, fg = text_color)
 Button_previous.place(x = 170, y = 270)
-Button_rewind = Button(tab2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2)
+Button_rewind = Button(tab2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2, fg = text_color)
 Button_rewind.place(x = 270, y = 245)
-Button_play_pause = Button(tab2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
+Button_play_pause = Button(tab2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
 Button_play_pause.place(x = 405, y = 245)
-Button_next = Button(tab2, image = icono_next_sub, borderwidth = 0, cursor='hand2', command = next, background = color_tab2)
+Button_next = Button(tab2, image = icono_next_sub, borderwidth = 0, cursor='hand2', command = next, background = color_tab2, fg = text_color)
 Button_next.place(x = 540, y = 270)
-Button_random = Button(tab2, image = icono_random_sub, borderwidth = 0, cursor='hand2', command = randomorder, background = color_tab2)
+Button_random = Button(tab2, image = icono_random_sub, borderwidth = 0, cursor='hand2', command = randomorder, background = color_tab2, fg = text_color)
 Button_random.place(x = 640, y = 290)
 
 
-style = ttk.Style()
-style.configure("Horizontal.TScale", bordercolor = 'green2', background = 'green2', foreground = 'green2', lightcolor = 'green2', darkcolor = 'black')
-
-boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop, background = color_tab2).place(x=10, y=10)
+boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop, background = color_tab2, fg = text_color).place(x=10, y=10)
 
 # Components of TAB3 -------------------------------------------------------------------------------------
 # Mapa ---------------------------------------------------------------------------------------------------
@@ -440,7 +483,7 @@ marker_1 = map_widget.set_marker(latitud,longitud, text="Carrito")
 map_widget.pack()
 
 
-boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab3).place(x=10, y=10)
+boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab3, fg = text_color).place(x=10, y=10)
 # Components of TAB4 -------------------------------------------------------------------------------------
 # MOTOR --------------------------------------------------------------------------------------------------
 
@@ -511,15 +554,15 @@ def fog_ligths():
     print('Hola');
 
 
-adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt, background = color_tab4).place(x=225, y=55)
-derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right, background = color_tab4).place(x=395, y=135)
-izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left, background = color_tab4).place(x=75, y=135)
-reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward, background = color_tab4).place(x=225, y=215)
+adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt, background = color_tab4, fg = text_color).place(x=225, y=55)
+derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right, background = color_tab4, fg = text_color).place(x=395, y=135)
+izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left, background = color_tab4, fg = text_color).place(x=75, y=135)
+reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward, background = color_tab4, fg = text_color).place(x=225, y=215)
 
-intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4).place(x=600, y=55)
-faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths, background = color_tab4).place(x=600, y=200)
+intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4, fg = text_color).place(x=600, y=55)
+faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths, background = color_tab4, fg = text_color).place(x=600, y=200)
 
-boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab4).place(x=10, y=10)
+boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab4, fg = text_color).place(x=10, y=10)
 
 # Components of TAB5 -------------------------------------------------------------------------------------
 # MENSAJES --------------------------------------------------------------------------------------------------
@@ -573,13 +616,13 @@ def mensaje4():
     print(message.sid)
 
 
-mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1, background = color_tab5).place(x=120, y=80)
-mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje2, background = color_tab5).place(x=120, y=150)
-mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje3, background = color_tab5).place(x=120, y=220)
-mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje4, background = color_tab5).place(x=120, y=290)
+mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1, background = color_tab5, fg = text_color).place(x=120, y=80)
+mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje2, background = color_tab5, fg = text_color).place(x=120, y=150)
+mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje3, background = color_tab5, fg = text_color).place(x=120, y=220)
+mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje4, background = color_tab5, fg = text_color).place(x=120, y=290)
 
 
-boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab5).place(x=10, y=10)
+boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab5, fg = text_color).place(x=10, y=10)
 # Components of TAB6 -------------------------------------------------------------------------------------
 # TELEFONO -----------------------------------------------------------------------------------------------
 
@@ -610,12 +653,12 @@ def llamada_AnaP():
     print(call.sid)
 
 
-AlexNu = Button(tab6, text= " Alex N ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AlexN, background = color_tab6).place(x=120, y=80)
-AnaP = Button(tab6, text= " Ana P ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AnaP, background = color_tab6).place(x=120, y=150)
-Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6).place(x=120, y=220)
-Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6).place(x=120, y=290)
+AlexNu = Button(tab6, text= " Alex N ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AlexN, background = color_tab6, fg = text_color).place(x=120, y=80)
+AnaP = Button(tab6, text= " Ana P ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AnaP, background = color_tab6, fg = text_color).place(x=120, y=150)
+Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=220)
+Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=290)
 
-boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab6).place(x=10, y=10)
+boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab6, fg = text_color).place(x=10, y=10)
 
 
 # Components of TAB7 -------------------------------------------------------------------------------------
@@ -662,6 +705,6 @@ def show_frames():
 
 show_frames()
 
-boton_global6 = Button(tab7, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab7).place(x=10, y=10)
+boton_global6 = Button(tab7, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab7, fg = text_color).place(x=10, y=10)
 # Create an infinite loop
 root.mainloop()
