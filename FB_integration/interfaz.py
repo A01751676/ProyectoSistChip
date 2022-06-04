@@ -35,7 +35,7 @@ import numpy as np
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
 
-
+os.chdir('FB_integration')
 # Start Tkinter fro the interface
 root = Tk()
 
@@ -165,10 +165,6 @@ titulo_menu = Label(tab3, text = "MAPA Y POSICIÓN GEOGRÁFICA", font = ('Calibr
 fecha_menu = Label(tab3, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab3, fg = text_color).place(x = 690,y = 5)
 hora_menu = Label(tab3, text = tiemp, font = ('Calibri',10), background = color_tab3, fg = text_color).place(x = 710,y = 20)
 
-titulo_menu = Label(tab3, text = "MAPA Y POSICIÓN GEOGRÁFICA", font = ('Calibri',30), background = color_tab3).place(x = 160,y = 5)
-fecha_menu = Label(tab3, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab3).place(x = 690,y = 5)
-hora_menu = Label(tab3, text = tiemp, font = ('Calibri',10), background = color_tab3).place(x = 710,y = 20)
-
 titulo_motores = Label(tab4, text = "MOVER MOTORES DEL COCHE", font = ('Calibri',30), background = color_tab4, fg = text_color).place(x = 160,y = 5)
 fecha_motores = Label(tab4, text = f"{date:%A, %B %d}", font = ('Calibri',10), background = color_tab4, fg = text_color).place(x = 690,y = 5)
 hora_motores = Label(tab4, text = tiemp, font = ('Calibri',10), background = color_tab4, fg = text_color).place(x = 710,y = 20)
@@ -290,6 +286,47 @@ lista = []
 for i in range (50,300,10):
     lista.append(i)
 
+def start_playback():
+    global actual_song, song_name, direction, actualizar 
+    bar1['value'] = random.choice(lista)
+    bar2['value'] = random.choice(lista)
+    bar3['value'] = random.choice(lista)
+    bar4['value'] = random.choice(lista)
+    bar5['value'] = random.choice(lista)
+    bar6['value'] = random.choice(lista)
+    bar7['value'] = random.choice(lista)
+    bar8['value'] = random.choice(lista)
+    bar9['value'] = random.choice(lista)
+    bar10['value'] = random.choice(lista)
+    bar11['value'] = random.choice(lista)
+    bar12['value'] = random.choice(lista)
+    bar13['value'] = random.choice(lista)
+    bar14['value'] = random.choice(lista)
+    bar15['value'] = random.choice(lista)
+    bar16['value'] = random.choice(lista)
+    bar17['value'] = random.choice(lista)
+    bar18['value'] = random.choice(lista)
+    bar19['value'] = random.choice(lista)
+    bar20['value'] = random.choice(lista)
+
+    time = pygame.mixer.music.get_pos()
+    x = int(int(time)*0.001)
+    actual_song = songList [songIndex]
+
+    audio = mutagen.File(actual_song)
+    log = audio.info.length
+    minutes, seconds = divmod(log, 60)
+
+    minutes, seconds = int(minutes), int (seconds)
+    tt = minutes * 60 + seconds
+    actualizar = root.after(100, start_playback)
+
+    if (x == tt):
+        root.after_cancel(actualizar)
+        stop_effect()
+
+    updateLabels()
+
 def evalFinal():
     if (knowSongEnd()):
         next()
@@ -298,8 +335,10 @@ def evalFinal():
 def previous():
     global data
     global songIndex
+    stop_effect()
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
+    start_playback()
 
 # PLAY AND PAUSE SONG
 def play_pause():
@@ -309,15 +348,18 @@ def play_pause():
 
     if (status):
         pauseSong()
+        stop_effect()
         status = False
     else:
         first = playSong(first)
         status = True
+        start_playback()
 
 # PLAY NEXT SONG
 def next():
     global data
     global songIndex
+    stop_effect()
     songIndex, data = playNext(songList, songIndex)
     tab2.delete('all')
     updateLabels()
@@ -334,11 +376,34 @@ def randomorder():
     songIndex, data = playNext(randomsongList, songIndex)
     tab2.delete('all')
     updateLabels()
-    
+    start_playback()
+
+def stop_effect():
+    bar1['value'] = 60
+    bar2['value'] = 70
+    bar3['value'] = 80
+    bar4['value'] = 90
+    bar5['value'] = 100
+    bar6['value'] = 90
+    bar7['value'] = 80
+    bar8['value'] = 70
+    bar9['value'] = 60
+    bar10['value'] = 70
+    bar11['value'] = 80
+    bar12['value'] = 90
+    bar13['value'] = 100
+    bar14['value'] = 90
+    bar15['value'] = 70
+    bar16['value'] = 60
+    bar17['value'] = 70
+    bar18['value'] = 80
+    bar19['value'] = 90
+    bar20['value'] = 100
 
 def stop():
     global actualizar
     pygame.mixer.music.stop()
+    stop_effect()
     travel_global()
 
 
@@ -429,33 +494,33 @@ def change_img():
 
     if (imagen):
         play_pause_img = icono_play_sub
-        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
+        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
         Button_play_pause.place(x = 405, y = 245)
         imagen = False
         play_pause()
     else:
         play_pause_img = icono_pause_sub
-        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
+        Button_play_pause = Button(tab2, image = play_pause_img, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
         Button_play_pause.place(x = 405, y = 245)
         imagen = True
         play_pause()
 
 # Botones para el reproductor de música
-Button_repeat = Button(tab2, image = icono_repeat_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2, fg = text_color)
+Button_repeat = Button(tab2, image = icono_repeat_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2)
 Button_repeat.place(x = 110, y = 290)
-Button_previous = Button(tab2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous, background = color_tab2, fg = text_color)
+Button_previous = Button(tab2, image = icono_previous_sub, borderwidth = 0, cursor='hand2', command = previous, background = color_tab2)
 Button_previous.place(x = 170, y = 270)
-Button_rewind = Button(tab2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2, fg = text_color)
+Button_rewind = Button(tab2, image = icono_rewind_sub, borderwidth = 0, cursor='hand2', command = rewind, background = color_tab2)
 Button_rewind.place(x = 270, y = 245)
-Button_play_pause = Button(tab2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2, fg = text_color)
+Button_play_pause = Button(tab2, image = icono_play_sub, borderwidth = 0, cursor='hand2', command = change_img, background = color_tab2)
 Button_play_pause.place(x = 405, y = 245)
-Button_next = Button(tab2, image = icono_next_sub, borderwidth = 0, cursor='hand2', command = next, background = color_tab2, fg = text_color)
+Button_next = Button(tab2, image = icono_next_sub, borderwidth = 0, cursor='hand2', command = next, background = color_tab2)
 Button_next.place(x = 540, y = 270)
-Button_random = Button(tab2, image = icono_random_sub, borderwidth = 0, cursor='hand2', command = randomorder, background = color_tab2, fg = text_color)
+Button_random = Button(tab2, image = icono_random_sub, borderwidth = 0, cursor='hand2', command = randomorder, background = color_tab2)
 Button_random.place(x = 640, y = 290)
 
 
-boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop, background = color_tab2, fg = text_color).place(x=10, y=10)
+boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop, background = color_tab2).place(x=10, y=10)
 
 # Components of TAB3 -------------------------------------------------------------------------------------
 # Mapa ---------------------------------------------------------------------------------------------------
@@ -483,7 +548,7 @@ marker_1 = map_widget.set_marker(latitud,longitud, text="Carrito")
 map_widget.pack()
 
 
-boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab3, fg = text_color).place(x=10, y=10)
+boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab3).place(x=10, y=10)
 # Components of TAB4 -------------------------------------------------------------------------------------
 # MOTOR --------------------------------------------------------------------------------------------------
 
@@ -554,15 +619,15 @@ def fog_ligths():
     print('Hola');
 
 
-adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt, background = color_tab4, fg = text_color).place(x=225, y=55)
-derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right, background = color_tab4, fg = text_color).place(x=395, y=135)
-izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left, background = color_tab4, fg = text_color).place(x=75, y=135)
-reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward, background = color_tab4, fg = text_color).place(x=225, y=215)
+adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt, background = color_tab4).place(x=225, y=55)
+derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right, background = color_tab4).place(x=395, y=135)
+izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left, background = color_tab4).place(x=75, y=135)
+reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward, background = color_tab4).place(x=225, y=215)
 
-intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4, fg = text_color).place(x=600, y=55)
-faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths, background = color_tab4, fg = text_color).place(x=600, y=200)
+intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4).place(x=600, y=55)
+faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths, background = color_tab4).place(x=600, y=200)
 
-boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab4, fg = text_color).place(x=10, y=10)
+boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab4).place(x=10, y=10)
 
 # Components of TAB5 -------------------------------------------------------------------------------------
 # MENSAJES --------------------------------------------------------------------------------------------------
@@ -616,13 +681,13 @@ def mensaje4():
     print(message.sid)
 
 
-mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1, background = color_tab5, fg = text_color).place(x=120, y=80)
-mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje2, background = color_tab5, fg = text_color).place(x=120, y=150)
-mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje3, background = color_tab5, fg = text_color).place(x=120, y=220)
-mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje4, background = color_tab5, fg = text_color).place(x=120, y=290)
+mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1, background = color_tab5, fg = text_color).place(x=120, y=80)
+mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje2, background = color_tab5, fg = text_color).place(x=120, y=150)
+mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje3, background = color_tab5, fg = text_color).place(x=120, y=220)
+mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje4, background = color_tab5, fg = text_color).place(x=120, y=290)
 
 
-boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab5, fg = text_color).place(x=10, y=10)
+boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab5).place(x=10, y=10)
 # Components of TAB6 -------------------------------------------------------------------------------------
 # TELEFONO -----------------------------------------------------------------------------------------------
 
@@ -653,12 +718,12 @@ def llamada_AnaP():
     print(call.sid)
 
 
-AlexNu = Button(tab6, text= " Alex N ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AlexN, background = color_tab6, fg = text_color).place(x=120, y=80)
-AnaP = Button(tab6, text= " Ana P ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AnaP, background = color_tab6, fg = text_color).place(x=120, y=150)
-Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=220)
-Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=290)
+AlexNu = Button(tab6, text= " Alex N ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AlexN, background = color_tab6, fg = text_color).place(x=120, y=80)
+AnaP = Button(tab6, text= " Ana P ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada_AnaP, background = color_tab6, fg = text_color).place(x=120, y=150)
+Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=220)
+Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10), background = color_tab6, fg = text_color).place(x=120, y=290)
 
-boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab6, fg = text_color).place(x=10, y=10)
+boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab6).place(x=10, y=10)
 
 
 # Components of TAB7 -------------------------------------------------------------------------------------
