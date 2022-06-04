@@ -7,14 +7,17 @@ from eyed3 import mp3
 import random
 from mutagen.mp3 import MP3
 
-# Rutas a directorios
-canciones = "CancionesSistChip"
-img_dir = "Imagenes_carrito"
-Front_B = "FBintegration"
 
-def getSongList(path):
-    os.chdir('..')
-    os.chdir(path)
+def getSongList():
+    """
+    GENERATES THE SONG LIST TO REPRODUCE
+
+    Returns
+    -------
+    LIST
+        SONG LIST.
+
+    """
     return os.listdir()
 
 def getSongData(song):
@@ -86,7 +89,7 @@ def loadSong(song):
     DICT
         SONG METADATA.
 
-    """ 
+    """
     mixer.music.load(song)
     return getSongData(song)
 
@@ -110,7 +113,6 @@ def pauseSong():
     mixer.music.pause()
     
 def playPrevious(songList, index):
-
 
     mixer.music.stop()
     newIndex = index-1

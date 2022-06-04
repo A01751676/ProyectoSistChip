@@ -18,7 +18,7 @@ import geocoder
 # Libreria para musica
 import pygame
 from pygame import *
-from SongRI2 import *
+from SongRI2o import *
 # Libreria para mostrar la fecha
 import datetime as dt
 import time
@@ -41,9 +41,6 @@ root.title('Carrito')     # Define title
 root.geometry('800x440')  # configure sice of screen
 root.config(bg = 'black')
 root.resizable(0,0)  
-
-imagenes = 
-
 root.iconbitmap('icono_lisa.ico')
 #root.wm_attributes('-transparentcolor','black')
 
@@ -375,11 +372,8 @@ def previous():
     global data
     global songIndex
     stop_effect()
-    path = "canciones"
-    os.chdir(path)
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
-    os.chdir('..')
     start_playback()
 
 # PLAY AND PAUSE SONG
@@ -402,12 +396,9 @@ def next():
     global data
     global songIndex
     stop_effect()
-    path = "canciones"
-    os.chdir(path)
     songIndex, data = playNext(songList, songIndex)
     frame2.delete('all')
     updateLabels()
-    os.chdir('..')
     start_playback()
 
 def rewind():
@@ -416,14 +407,11 @@ def rewind():
 def randomorder():
     global first, songList, randomsongList, songIndex,  data
     mixer.music.stop()
-    path = "canciones"
-    os.chdir(path)
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
     frame2.delete('all')
     updateLabels()
-    os.chdir('..')
     start_playback()
     
 
@@ -536,7 +524,6 @@ style1.theme_use('clam')
 style1.configure("Horizontal.TProgressbar", foreground = 'red', troughcolor = 'DarkOrchid1', bordercolor = '#970BD9', lightcolor = '#970BD9', darkcolor = 'black')
 
 # Imágenes para el reproductor de música
-os.chdir('..')
 icono_rewind = PhotoImage(file = 'icono_rewind.png')       # rewind
 icono_repeat = PhotoImage(file = 'icono_repetir.png')      # repeat
 icono_previous = PhotoImage(file = 'icono_previous.png')   # previous
@@ -590,245 +577,5 @@ style.configure("Horizontal.TScale", bordercolor = 'green2', background = 'green
 
 boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop).place(x=10, y=10)
 
-# Components of TAB3 -------------------------------------------------------------------------------------
-# Mapa ---------------------------------------------------------------------------------------------------
 
-frame_map = LabelFrame(tab3)
-#frame_map.pack(padx = 20, pady = 20)
-frame_map.place(x = 60, y = 60)
-
-#latitud = 19.597111
-#longitud = -99.227274
-
-g = geocoder.ip('me')
-
-latitud = g.latlng[0]
-longitud = g.latlng[1]
-
-
-map_widget = tkintermapview.TkinterMapView(frame_map, width = 700, height = 300, corner_radius = 0)
-map_widget.set_position(latitud,longitud)
-map_widget.set_zoom(16)
-
-# Marker
-marker_1 = map_widget.set_marker(latitud,longitud, text="Carrito")
-
-map_widget.pack()
-
-
-boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
-# Components of TAB4 -------------------------------------------------------------------------------------
-# MOTOR --------------------------------------------------------------------------------------------------
-
-# Imágenes para el motor
-adelante_con_fondo = PhotoImage(file = 'flecha_up.png')        # adelante
-reversa_con_fondo = PhotoImage(file = 'flecha_down.png')       # reversa
-derecha_con_fondo = PhotoImage(file = 'flecha_right.png')      # derecha
-izquierda_con_fondo = PhotoImage(file = 'flecha_left.png')     # izquierda
-front_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Delante
-back_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Reversa
-stopp_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Parking
-right_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Derecha
-left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Izquierda
-icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png')    # Derecha
-icono_fog = PhotoImage(file = 'icono_fog.png')     # Izquierda
-
-#Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
-adelante_con_fondo_sub = adelante_con_fondo.subsample(10)
-reversa_con_fondo_sub = reversa_con_fondo.subsample(10)
-derecha_con_fondo_sub = derecha_con_fondo.subsample(10)
-izquierda_con_fondo_sub = izquierda_con_fondo.subsample(10)
-front_con_fondo_sub = front_con_fondo.subsample(20)
-back_con_fondo_sub = back_con_fondo.subsample(20)
-stopp_con_fondo_sub = stopp_con_fondo.subsample(20)
-right_con_fondo_sub = right_con_fondo.subsample(20)
-left_con_fondo_sub = left_con_fondo.subsample(20)
-icono_intermitentes_sub = icono_intermitentes.subsample(20)
-icono_fog_sub = icono_fog.subsample(20)
-
-
-# Variable global
-global velocidad
-velocidad = 0
-
-def frontt():
-    global velocidad
-    velocidad = 1
-
-    img_adelante = Label(tab4, image = front_con_fondo_sub)
-    img_adelante.place(x=500, y=100)
-
-def right():
-    global velocidad
-    velocidad = 2
-
-    img_derecha = Label(tab4, image = right_con_fondo_sub)
-    img_derecha.place(x=500, y=100)
-
-def left():
-    global velocidad
-    velocidad = 3
-
-    img_izquierda = Label(tab4, image = left_con_fondo_sub)
-    img_izquierda.place(x=500, y=100)
-
-def backward():
-    global velocidad
-    velocidad = 4
-    
-    img_reversa = Label(tab4, image = back_con_fondo_sub)
-    img_reversa.place(x=500, y=100)
-
-if (velocidad == 0):
-    print("stop")
-elif(velocidad == 1):
-    print("stop")
-elif(velocidad == 2):
-    print("stop")
-elif(velocidad == 3):
-    print("stop")
-elif(velocidad == 4):
-    print("stop")
-
-adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt).place(x=225, y=55)
-derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='hand2', command = right).place(x=395, y=135)
-izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left).place(x=75, y=135)
-reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward).place(x=225, y=215)
-
-intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = left).place(x=600, y=55)
-faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = backward).place(x=600, y=200)
-
-boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
-# Components of TAB5 -------------------------------------------------------------------------------------
-# MENSAJES --------------------------------------------------------------------------------------------------
-
-def mensaje1():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
-
-def mensaje2():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
-
-def mensaje3():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
-
-def mensaje4():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
-
-
-mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1).place(x=120, y=80)
-mensaje_2 = Button(tab5, text= " Mensaje 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje2).place(x=120, y=150)
-mensaje_3 = Button(tab5, text= " Mensaje 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje3).place(x=120, y=220)
-mensaje_4 = Button(tab5, text= " Mensaje 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje4).place(x=120, y=290)
-
-
-boton_global4 = Button(tab5, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
-# Components of TAB6 -------------------------------------------------------------------------------------
-# TELEFONO -----------------------------------------------------------------------------------------------
-
-def llamada():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    call = client.calls.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        url = "http://demo.twilio.com/docs/voice.xml"
-    )
-    print(call.sid)
-
-
-twilio = Button(tab6, text= " TWILIO ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10), command = llamada).place(x=120, y=80)
-Contacto2 = Button(tab6, text= " Contacto 2 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=150)
-Contacto3 = Button(tab6, text= " Contacto 3 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=220)
-Contacto4 = Button(tab6, text= " Contacto 4 ", borderwidth = 0, cursor='hand2', height="3", width="80",font=('Calibri',10)).place(x=120, y=290)
-
-boton_global5 = Button(tab6, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
-
-
-# Components of TAB7 -------------------------------------------------------------------------------------
-# CAMARA -------------------------------------------------------------------------------------------------
-
-
-# Create a Label to capture the Video frames sized 800 x 420
-label =Label(tab7)
-label.place(x = 60, y = 10)
-cap= cv2.VideoCapture(0)
-
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 358)
-
-
-reverseStatusPin = 32
-#GPIO.setup(reverseStatusPin, GPIO.OUT)
-# Define function to show frame
-def show_frames():
-   # Get the latest frame and convert into Image
-   #GPIO.output(reverseStatusPin, GPIO.HIGH)
-   
-
-   cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
-   
-   linesPts = np.array([[0, 358], [75, 268], [565, 268], [640, 358]])
-   linesPts = linesPts.reshape((-1, 1, 2))
-   cv2image = cv2.polylines(cv2image, np.int32([linesPts]), True, (255, 0, 0), 2)
-   
-   linesPts = np.array([[75, 268], [150, 178], [490, 178], [565, 268]])
-   linesPts = linesPts.reshape((-1, 1, 2))
-   cv2image = cv2.polylines(cv2image, np.int32([linesPts]), True, (255, 255, 0), 2)
-   
-   linesPts = np.array([[150, 178], [225, 88], [415, 88], [490, 178]])
-   linesPts = linesPts.reshape((-1, 1, 2))
-   cv2image = cv2.polylines(cv2image, np.int32([linesPts]), True, (0, 255, 0), 2)
-   
-   
-   img = Image.fromarray(cv2image)
-   # Convert image to PhotoImage
-   imgtk = ImageTk.PhotoImage(image = img)
-   label.imgtk = imgtk
-   label.configure(image=imgtk)
-   # Repeat after an interval to capture continiously
-   label.after(20, show_frames)
-
-show_frames()
-
-boton_global6 = Button(tab7, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global).place(x=10, y=10)
-# Create an infinite loop
 root.mainloop()

@@ -5,6 +5,7 @@
 # Using tkinter, firstafull you need to create things and then you show that things
 
 from cgitb import text
+from multiprocessing.spawn import import_main_path
 from tkinter import *          # importamos toda la libreria de 'tkinter' 
 from tkinter import Button, Label,Tk,filedialog, ttk, Frame, PhotoImage
 from click import open_file
@@ -18,7 +19,7 @@ import geocoder
 # Libreria para musica
 import pygame
 from pygame import *
-from SongRI2 import *
+from SongRI import *
 #from LightsMotors2 import *
 # Libreria para mostrar la fecha
 import datetime as dt
@@ -33,23 +34,23 @@ import numpy as np
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
 
+
 # Start Tkinter fro the interface
 root = Tk()
 
+img_dir = 'Imagenes'
+os.chdir('FB_integration')
 # Principal window
 root.title('Carrito')     # Define title
 root.geometry('800x440')  # configure sice of screen
 root.config(bg = 'black')
 root.resizable(0,0)  
-
-# Rutas a directorios
-img_dir = "Imagenes_carrito"
-Front_B = "FBintegration"
 #root.wm_attributes('-transparentcolor','black')
 
 # We include tab panel
 nb = ttk.Notebook(root)
 nb.pack(pady = 0)
+
 
 # Colores aleatorios
 color1 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
@@ -66,6 +67,7 @@ fondo_motores = PhotoImage(file = 'fondo_motores.png')
 fondo_mensajes = PhotoImage(file = 'fondo_mensajes.png')
 fondo_telefono = PhotoImage(file = 'fondo_telefono.png')
 fondo_camara = PhotoImage(file = 'fondo_reversa.png')
+
 
 # Creating tabs
 tab1 = Frame(nb, width = 500, height = 500)
@@ -120,7 +122,7 @@ fondo_camara = PhotoImage(file = 'fondo_reversa.png')
 camara_con_fondo = PhotoImage(file = 'reversa_con_fondo.png')
 camara_sin_fondo = PhotoImage(file = 'reversa_sin_fondo.png')
 
-
+os.chdir('..')
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 
 # Menu
@@ -305,7 +307,7 @@ direction = ''
 ## --------------------------------------
 ## GLOBAL VARIABLES FOR MP3 PLAYER
 first = True
-songList = getSongList(canciones)
+songList = getSongList()
 songIndex = 0
 status = False # status 0 => pause, 1 => play
 imagen = False
@@ -355,7 +357,7 @@ def start_playback():
     minutes, seconds = int(minutes), int (seconds)
     tt = minutes * 60 + seconds
     actualizar = root.after(100, start_playback)
-    evalFinal()
+    #evalFinal()
 
     if (x == tt):
         root.after_cancel(actualizar)
@@ -375,10 +377,8 @@ def previous():
     global data
     global songIndex
     stop_effect()
-
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
-
     start_playback()
 
 # PLAY AND PAUSE SONG
@@ -401,12 +401,9 @@ def next():
     global data
     global songIndex
     stop_effect()
-
     songIndex, data = playNext(songList, songIndex)
     frame2.delete('all')
-
     updateLabels()
-
     start_playback()
 
 def rewind():
@@ -415,14 +412,12 @@ def rewind():
 def randomorder():
     global first, songList, randomsongList, songIndex,  data
     mixer.music.stop()
-
+    songList = getSongList()
     randomsongList= randomSongOrder(songList)
-
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
     frame2.delete('all')
     updateLabels()
-
     start_playback()
     
 
@@ -535,8 +530,6 @@ style1.theme_use('clam')
 style1.configure("Horizontal.TProgressbar", foreground = 'red', troughcolor = 'DarkOrchid1', bordercolor = '#970BD9', lightcolor = '#970BD9', darkcolor = 'black')
 
 # Imágenes para el reproductor de música
-
-os.chdir('..')
 os.chdir(img_dir)
 icono_rewind = PhotoImage(file = 'icono_rewind.png')       # rewind
 icono_repeat = PhotoImage(file = 'icono_repetir.png')      # repeat
@@ -546,7 +539,6 @@ icono_pause = PhotoImage(file = 'icono_pausa.png')         # pause
 icono_next = PhotoImage(file = 'icono_next.png')           # next
 icono_random = PhotoImage(file = 'icono_random.png')       # random
 os.chdir('..')
-os.chdir(Front_B)
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 icono_rewind_sub = icono_rewind.subsample(7)
@@ -624,8 +616,6 @@ boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor
 # MOTOR --------------------------------------------------------------------------------------------------
 
 # Imágenes para el motor
-
-os.chdir('..')
 os.chdir(img_dir)
 adelante_con_fondo = PhotoImage(file = 'flecha_up.png')        # adelante
 reversa_con_fondo = PhotoImage(file = 'flecha_down.png')       # reversa
@@ -639,7 +629,6 @@ left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Izquierda
 icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png') # intermitentes
 icono_fog = PhotoImage(file = 'icono_fog.png')                     # Fog
 os.chdir('..')
-os.chdir(Front_B)
 
 #Reduce las dimensiones de la imagen en un (ancho_imagen / 2)
 adelante_con_fondo_sub = adelante_con_fondo.subsample(10)
