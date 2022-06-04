@@ -370,6 +370,7 @@ def next():
     global songIndex
     stop_effect()
     songIndex, data = playNext(songList, songIndex)
+    tab2.delete('all')
     updateLabels()
     start_playback()
 
@@ -383,6 +384,7 @@ def randomorder():
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
+    tab2.delete('all')
     updateLabels()
     start_playback()
     
