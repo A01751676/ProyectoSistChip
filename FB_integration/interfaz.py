@@ -59,6 +59,7 @@ color3 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 color4 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 
 # Fondo Tab
+os.chdir("..")
 os.chdir(img_dir)
 fondo_menu = PhotoImage(file = 'fondo_menu.png')
 fondo_musica = PhotoImage(file = 'fondo_musica.png')
@@ -172,7 +173,6 @@ nb.add(tab7, image = camara_sin_fondo_sub)
 # Sabemos la fecha y hora
 date = dt.datetime.now()
 tiemp = time.strftime("%I:%M:%S %p")
-
 
 # Canvas para imagenes y labels sin fondo ----------------------------
 canvas_menu = Canvas(tab1)
