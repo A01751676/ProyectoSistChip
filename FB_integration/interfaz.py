@@ -59,7 +59,6 @@ color3 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 color4 = ["#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])]
 
 # Fondo Tab
-os.chdir("..")
 os.chdir(img_dir)
 fondo_menu = PhotoImage(file = 'fondo_menu.png')
 fondo_musica = PhotoImage(file = 'fondo_musica.png')
@@ -173,6 +172,7 @@ nb.add(tab7, image = camara_sin_fondo_sub)
 # Sabemos la fecha y hora
 date = dt.datetime.now()
 tiemp = time.strftime("%I:%M:%S %p")
+
 
 # Canvas para imagenes y labels sin fondo ----------------------------
 canvas_menu = Canvas(tab1)
@@ -323,7 +323,9 @@ lista = []
 for i in range (50,300,10):
     lista.append(i)
 
+
 def start_playback():
+    os.chdir('..')
     global actual_song, song_name, direction, actualizar 
     bar1['value'] = random.choice(lista)
     bar2['value'] = random.choice(lista)
@@ -357,7 +359,6 @@ def start_playback():
     minutes, seconds = int(minutes), int (seconds)
     tt = minutes * 60 + seconds
     actualizar = root.after(100, start_playback)
-    #evalFinal()
 
     if (x == tt):
         root.after_cancel(actualizar)
