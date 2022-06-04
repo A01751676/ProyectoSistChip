@@ -315,6 +315,7 @@ def next():
     global data
     global songIndex
     songIndex, data = playNext(songList, songIndex)
+    tab2.delete('all')
     updateLabels()
 
 def rewind():
@@ -327,6 +328,7 @@ def randomorder():
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
+    tab2.delete('all')
     updateLabels()
     
 
