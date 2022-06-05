@@ -3,7 +3,6 @@
 # Interfaz Gráfica proyecto DISEÑO DE CHIPS
 
 # Using tkinter, firstafull you need to create things and then you show that things
-
 from cgitb import text
 from multiprocessing.spawn import import_main_path
 from tkinter import *          # importamos toda la libreria de 'tkinter' 
@@ -281,52 +280,6 @@ data = loadSong(songList [songIndex])
 actual_song = songList [songIndex]
 song_name = data["title"]
 
-## MP3 PLAYER COMMANDS TO BUTTONS --------------------------------------------
-lista = []
-for i in range (50,300,10):
-    lista.append(i)
-
-def start_playback():
-    global actual_song, song_name, direction, actualizar 
-    bar1['value'] = random.choice(lista)
-    bar2['value'] = random.choice(lista)
-    bar3['value'] = random.choice(lista)
-    bar4['value'] = random.choice(lista)
-    bar5['value'] = random.choice(lista)
-    bar6['value'] = random.choice(lista)
-    bar7['value'] = random.choice(lista)
-    bar8['value'] = random.choice(lista)
-    bar9['value'] = random.choice(lista)
-    bar10['value'] = random.choice(lista)
-    bar11['value'] = random.choice(lista)
-    bar12['value'] = random.choice(lista)
-    bar13['value'] = random.choice(lista)
-    bar14['value'] = random.choice(lista)
-    bar15['value'] = random.choice(lista)
-    bar16['value'] = random.choice(lista)
-    bar17['value'] = random.choice(lista)
-    bar18['value'] = random.choice(lista)
-    bar19['value'] = random.choice(lista)
-    bar20['value'] = random.choice(lista)
-
-    time = pygame.mixer.music.get_pos()
-    x = int(int(time)*0.001)
-    actual_song = songList [songIndex]
-
-    audio = mutagen.File(actual_song)
-    log = audio.info.length
-    minutes, seconds = divmod(log, 60)
-
-    minutes, seconds = int(minutes), int (seconds)
-    tt = minutes * 60 + seconds
-    actualizar = root.after(100, start_playback)
-
-    if (x == tt):
-        root.after_cancel(actualizar)
-        stop_effect()
-
-    updateLabels()
-
 def evalFinal():
     if (knowSongEnd()):
         next()
@@ -335,10 +288,8 @@ def evalFinal():
 def previous():
     global data
     global songIndex
-    stop_effect()
     songIndex, data = playPrevious(songList, songIndex)
     updateLabels()
-    start_playback()
 
 # PLAY AND PAUSE SONG
 def play_pause():
@@ -348,20 +299,16 @@ def play_pause():
 
     if (status):
         pauseSong()
-        stop_effect()
         status = False
     else:
         first = playSong(first)
         status = True
-        start_playback()
 
 # PLAY NEXT SONG
 def next():
     global data
     global songIndex
-    stop_effect()
     songIndex, data = playNext(songList, songIndex)
-    tab2.delete('all')
     updateLabels()
 
 def rewind():
@@ -374,100 +321,33 @@ def randomorder():
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
-    tab2.delete('all')
     updateLabels()
-    start_playback()
-
-def stop_effect():
-    bar1['value'] = 60
-    bar2['value'] = 70
-    bar3['value'] = 80
-    bar4['value'] = 90
-    bar5['value'] = 100
-    bar6['value'] = 90
-    bar7['value'] = 80
-    bar8['value'] = 70
-    bar9['value'] = 60
-    bar10['value'] = 70
-    bar11['value'] = 80
-    bar12['value'] = 90
-    bar13['value'] = 100
-    bar14['value'] = 90
-    bar15['value'] = 70
-    bar16['value'] = 60
-    bar17['value'] = 70
-    bar18['value'] = 80
-    bar19['value'] = 90
-    bar20['value'] = 100
 
 def stop():
     global actualizar
     pygame.mixer.music.stop()
-    stop_effect()
     travel_global()
 
 
 def updateLabels():
     global titulo_cancion,artista_cancion,album_cancion,ano_cancion,rate_cancion,stereo_cancion
     try:
-        titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 70)
-        artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 90)
-        album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 110)
-        ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 130)
-        rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 150)
-        stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 170)
+        titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 65)
+        artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 95)
+        album_cancion = Label(tab2, text = data["album"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 120)
+        ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 145)
+        rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 170)
+        stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 195)
     except: 
         pass
 
 # Labels de cancion
-titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 70)
-artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 90)
-album_cancion = Label(tab2, text = data["album"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 110)
-ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 130)
-rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 150)
-stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',10), background = color_tab2, fg = text_color).place(x = 600,y = 170)
-
-# Bars 
-bar1 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar1.place(x=50, y=60)
-bar2 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar2.place(x=70, y=60)
-bar3 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar3.place(x=90, y=60)
-bar4 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar4.place(x=110, y=60)
-bar5 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar5.place(x=130, y=60)
-bar6 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar6.place(x=150, y=60)
-bar7 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar7.place(x=170, y=60)
-bar8 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar8.place(x=190, y=60)
-bar9 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar9.place(x=210, y=60)
-bar10 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar10.place(x=230, y=60)
-bar11 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar11.place(x=250, y=60)
-bar12 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar12.place(x=270, y=60)
-bar13 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar13.place(x=290, y=60)
-bar14 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar14.place(x=310, y=60)
-bar15 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar15.place(x=330, y=60)
-bar16 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar16.place(x=350, y=60)
-bar17 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar17.place(x=370, y = 60)
-bar18 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar18.place(x=390, y=60)
-bar19 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar19.place(x=410, y=60)
-bar20 = ttk.Progressbar(tab2, orient = 'vertical', length = 170, maximum = 300, style = 'Vertical.TProgressbar')
-bar20.place(x=430, y=60)
+titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 65)
+artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 95)
+album_cancion = Label(tab2, text = data["album"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 120)
+ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 145)
+rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 170)
+stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 195)
 
 # Imágenes para el reproductor de música
 os.chdir(img_dir)
