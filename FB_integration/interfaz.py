@@ -35,13 +35,13 @@ import numpy as np
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
 
-os.chdir('FB_integration')
+#os.chdir('FB_integration')
 # Start Tkinter fro the interface
 root = Tk()
 
 img_dir = 'Imagenes'
 
-#os.chdir('FB_integration')
+os.chdir('FB_integration')
 # Principal window
 root.title('Carrito')     # Define title
 root.geometry('800x440')  # configure sice of screen
