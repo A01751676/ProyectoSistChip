@@ -289,6 +289,7 @@ def previous():
     global data
     global songIndex
     songIndex, data = playPrevious(songList, songIndex)
+    musica_texto.delete('all')
     updateLabels()
 
 # PLAY AND PAUSE SONG
@@ -309,6 +310,7 @@ def next():
     global data
     global songIndex
     songIndex, data = playNext(songList, songIndex)
+    musica_texto.delete('all')
     updateLabels()
 
 def rewind():
@@ -321,6 +323,7 @@ def randomorder():
     randomsongList= randomSongOrder(songList)
     loadSong(randomsongList [songIndex])
     songIndex, data = playNext(randomsongList, songIndex)
+    musica_texto.delete('all')
     updateLabels()
 
 def stop():
@@ -332,22 +335,25 @@ def stop():
 def updateLabels():
     global titulo_cancion,artista_cancion,album_cancion,ano_cancion,rate_cancion,stereo_cancion
     try:
-        titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 65)
-        artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 95)
-        album_cancion = Label(tab2, text = data["album"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 120)
-        ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 145)
-        rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 170)
-        stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 195)
+        musica_texto.create_text(210, 25, text= data["title"], font = ('Calibri',15), fill = text_color)
+        musica_texto.create_text(210, 50, text= data["artist"], font = ('Calibri',15), fill = text_color)
+        musica_texto.create_text(210, 75, text= data["album"], font = ('Calibri',15), fill = text_color)
+        musica_texto.create_text(210, 100, text= data["year"], font = ('Calibri',15), fill = text_color)
+        musica_texto.create_text(210, 125, text= data["sampleRate"], font = ('Calibri',15), fill = text_color)
+        musica_texto.create_text(210, 150, text= "Stereo", font = ('Calibri',15), fill = text_color)
     except: 
         pass
 
-# Labels de cancion
-titulo_cancion = Label(tab2, text = data["title"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 65)
-artista_cancion = Label(tab2, text = data["artist"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 95)
-album_cancion = Label(tab2, text = data["album"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 120)
-ano_cancion = Label(tab2, text = data["year"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 145)
-rate_cancion = Label(tab2, text = data["sampleRate"], font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 170)
-stereo_cancion = Label(tab2, text = "Stereo", font = ('Calibri',15), background = color_tab2, fg = text_color).place(x = 300,y = 195)
+# Canvas para musica
+
+musica_texto = Canvas(tab2, width=425,height=180, background = color_tab2, borderwidth = 0)
+musica_texto.create_text(210, 25, text= data["title"], font = ('Calibri',15), fill = text_color)
+musica_texto.create_text(210, 50, text= data["artist"], font = ('Calibri',15), fill = text_color)
+musica_texto.create_text(210, 75, text= data["album"], font = ('Calibri',15), fill = text_color)
+musica_texto.create_text(210, 100, text= data["year"], font = ('Calibri',15), fill = text_color)
+musica_texto.create_text(210, 125, text= data["sampleRate"], font = ('Calibri',15), fill = text_color)
+musica_texto.create_text(210, 150, text= "Stereo", font = ('Calibri',15), fill = text_color)
+musica_texto.place(x = 190, y = 60)
 
 # Imágenes para el reproductor de música
 os.chdir(img_dir)
