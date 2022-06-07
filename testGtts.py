@@ -26,7 +26,7 @@ songIndex = 0
 
 # Iniciar MP3 Player
 initMP3Player()
-data = loadSong(songList [songIndex])
+data = loadSong("CancionesSistChip\sound1.mp3")
 
 ## Primera cancion
 first = playSong(first)

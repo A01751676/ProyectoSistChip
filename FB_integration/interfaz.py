@@ -20,6 +20,7 @@ import geocoder
 import pygame
 from pygame import *
 from SongRI import *
+from LightsMotors import *
 #from LightsMotors2 import *
 # Libreria para mostrar la fecha
 import datetime as dt
@@ -34,7 +35,7 @@ import numpy as np
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
 
-os.chdir('FB_integration')
+#os.chdir('FB_integration')
 # Start Tkinter fro the interface
 root = Tk()
 
@@ -151,7 +152,7 @@ nb.add(tab7, image = camara_sin_fondo_sub)
 
 # Sabemos la fecha y hora
 date = dt.datetime.now()
-tiemp = time.strftime("%I:%M:%S %p")
+tiemp = time.strftime("%I:%M %p")
 
 
 # Labels para texto ----------------------------
@@ -440,15 +441,10 @@ boton_global2 = Button(tab3, image = menu_con_fondo_sub, borderwidth = 0, cursor
 
 # Imágenes para el motor
 os.chdir(img_dir)
-adelante_con_fondo = PhotoImage(file = 'flecha_up.png')        # adelante
-reversa_con_fondo = PhotoImage(file = 'flecha_down.png')       # reversa
-derecha_con_fondo = PhotoImage(file = 'flecha_right.png')      # derecha
-izquierda_con_fondo = PhotoImage(file = 'flecha_left.png')     # izquierda
-front_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Delante
-back_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Reversa
-stopp_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Parking
-right_con_fondo = PhotoImage(file = 'musica_con_fondo.png')    # Derecha
-left_con_fondo = PhotoImage(file = 'musica_con_fondo.png')     # Izquierda
+adelante_con_fondo = PhotoImage(file = 'flecha_up.png')            # adelante
+reversa_con_fondo = PhotoImage(file = 'flecha_down.png')           # reversa
+derecha_con_fondo = PhotoImage(file = 'flecha_right.png')          # derecha
+izquierda_con_fondo = PhotoImage(file = 'flecha_left.png')         # izquierda
 icono_intermitentes = PhotoImage(file = 'icono_intermitentes.png') # intermitentes
 icono_fog = PhotoImage(file = 'icono_fog.png')                     # Fog
 os.chdir('..')
@@ -458,51 +454,67 @@ adelante_con_fondo_sub = adelante_con_fondo.subsample(10)
 reversa_con_fondo_sub = reversa_con_fondo.subsample(10)
 derecha_con_fondo_sub = derecha_con_fondo.subsample(10)
 izquierda_con_fondo_sub = izquierda_con_fondo.subsample(10)
-front_con_fondo_sub = front_con_fondo.subsample(20)
-back_con_fondo_sub = back_con_fondo.subsample(20)
-stopp_con_fondo_sub = stopp_con_fondo.subsample(20)
-right_con_fondo_sub = right_con_fondo.subsample(20)
-left_con_fondo_sub = left_con_fondo.subsample(20)
-icono_intermitentes_sub = icono_intermitentes.subsample(20);
-icono_fog_sub = icono_fog.subsample(20);
+icono_intermitentes_sub = icono_intermitentes.subsample(10)
+icono_fog_sub = icono_fog.subsample(10)
 
-# Variable global
-global velocidad
-velocidad = 0
+# luces
+redLights = 29
+rightFrontDir = 31
+leftFrontDir = 33
+rightBackDir = 35
+leftBackDir = 37
+frontLights = 40 
+foglamps = 38
+autoLightsPin = 36
+
+lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
+
 
 def frontt():
-    global velocidad
-    velocidad = 1
-
-    img_adelante = Label(tab4, image = front_con_fondo_sub)
-    img_adelante.place(x=500, y=100)
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
+    
+    stopMovement(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
 
 def right():
-    global velocidad
-    velocidad = 2
-
-    img_derecha = Label(tab4, image = right_con_fondo_sub)
-    img_derecha.place(x=500, y=100)
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
+    
+    rightDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPin)
+    
 
 def left():
-    global velocidad
-    velocidad = 3
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
+    
+    leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPin)
 
-    img_izquierda = Label(tab4, image = left_con_fondo_sub)
-    img_izquierda.place(x=500, y=100)
 
 def backward():
-    global velocidad
-    velocidad = 4
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
     
-    img_reversa = Label(tab4, image = back_con_fondo_sub)
-    img_reversa.place(x=500, y=100)
-
+    reverse(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
+    
 def intermitentes_ligths():
-    print('Hola');
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
+    
+    intermitentes(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
 
 def fog_ligths():
-    print('Hola');
+    
+    global redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+             leftBackDir, frontLights, foglamps, autoLightsPi
+    
+    fogLights(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
+                 leftBackDir, frontLights, foglamps, autoLightsPin)
 
 
 adelante = Button(tab4, image = adelante_con_fondo_sub, borderwidth = 0, cursor='hand2', command = frontt, background = color_tab4).place(x=225, y=55)
@@ -510,7 +522,7 @@ derecha = Button(tab4, image = derecha_con_fondo_sub, borderwidth = 0, cursor='h
 izquierda = Button(tab4, image = izquierda_con_fondo_sub, borderwidth = 0, cursor='hand2', command = left, background = color_tab4).place(x=75, y=135)
 reversa = Button(tab4, image = reversa_con_fondo_sub, borderwidth = 0, cursor='hand2', command = backward, background = color_tab4).place(x=225, y=215)
 
-intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4).place(x=600, y=55)
+intermitente = Button(tab4, image = icono_intermitentes_sub, borderwidth = 0, cursor='hand2', command = intermitentes_ligths, background = color_tab4).place(x=600, y=70)
 faros = Button(tab4, image = icono_fog_sub, borderwidth = 0, cursor='hand2', command = fog_ligths, background = color_tab4).place(x=600, y=200)
 
 boton_global3 = Button(tab4, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab4).place(x=10, y=10)
