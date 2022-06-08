@@ -3,16 +3,13 @@
 import RPi.GPIO as GPIO
 import time
 
-## -------------------------------- LIGHTS -----------------------------------
-
-redLights = 29
-rightFrontDir = 31
-leftFrontDir = 33
-rightBackDir = 35
-leftBackDir = 37
-frontLights = 40 
-foglamps = 38
-autoLightsPin = 36
+## -------------------------------- MOTORES ----------------------------------
+in1 = 24
+in2 = 23
+enA = 25
+in3 = 24
+in4 = 23
+enB = 25
 
 def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps, autoLightsPin):
@@ -31,6 +28,23 @@ def lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     GPIO.setup(frontLights, GPIO.OUT)
     GPIO.setup(foglamps, GPIO.OUT)
     
+    GPIO.setup(in1,GPIO.OUT)
+    GPIO.setup(in2,GPIO.OUT)
+    GPIO.setup(enA,GPIO.OUT)
+    GPIO.setup(in3,GPIO.OUT)
+    GPIO.setup(in4,GPIO.OUT)
+    GPIO.setup(enB,GPIO.OUT)
+    
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
+    
+    pA = GPIO.PWM(enA,1000)
+    pA.start(25) 
+    
+    pB = GPIO.PWM(enA,1000)
+    pB.start(25) 
 
 def IDLEnoche(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
                  leftBackDir, frontLights, foglamps):
@@ -138,33 +152,34 @@ def fogLights(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
     
     GPIO.output(foglamps, GPIO.HIGH)
 
-redLights = 29
-rightFrontDir = 31
-leftFrontDir = 33
-rightBackDir = 35
-leftBackDir = 37
-frontLights = 40 
-foglamps = 38
-autoLightsPin = 36
-
 ## -------------------------------- MOTORS -----------------------------------
 def moveForward():
-    pass
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
 
 def turnRight():
-    pass
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
 
 def turnLeft():
-    pass
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
+    
 
 def stopMovement():
-    pass
-
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
+    
 def moveBack():
-    pass
-
-lightsConfig(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, autoLightsPin)
-
-leftDir(redLights, rightFrontDir, leftFrontDir, rightBackDir, \
-                 leftBackDir, frontLights, foglamps, autoLightsPin)
+    GPIO.output(in2,GPIO.HIGH)
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
+    GPIO.output(in3,GPIO.HIGH)
