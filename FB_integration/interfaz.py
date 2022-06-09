@@ -41,6 +41,12 @@ root = Tk()
 
 img_dir = 'Imagenes'
 
+reverseStatusPin = 22
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(reverseStatusPin, GPIO.OUT)
+GPIO.output(reverseStatusPin, GPIO.LOW)
+
 #os.chdir('FB_integration')
 # Principal window
 root.title('Carrito')     # Define title
@@ -199,7 +205,9 @@ if contador == 1:
     contador = contador + 1
 
 def travel_global():
-    global status_global      
+    
+    global status_global, reverseStatusPin
+    GPIO.output(reverseStatusPin, GPIO.LOW)
     if (status_global):
         status_global = False
     else:
@@ -246,7 +254,8 @@ def travel_telefono():
         nb.select(5)
 
 def travel_camara():
-    global status_camara    
+    global status_camara, reverseStatusPin
+    GPIO.output(reverseStatusPin, GPIO.HIGH)
     if (status_camara == False):
         nb.add(tab7, image = camara_sin_fondo_sub)
         nb.select(6)
@@ -637,12 +646,11 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 358)
 
 
-reverseStatusPin = 32
-#GPIO.setup(reverseStatusPin, GPIO.OUT)
+
 # Define function to show frame
 def show_frames():
    # Get the latest frame and convert into Image
-   #GPIO.output(reverseStatusPin, GPIO.HIGH)
+   
    cv2image= cv2.cvtColor(cap.read()[1],cv2.COLOR_BGR2RGB)
    
    linesPts = np.array([[0, 358], [75, 268], [565, 268], [640, 358]])
