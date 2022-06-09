@@ -424,7 +424,6 @@ boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor
 # Mapa ---------------------------------------------------------------------------------------------------
 
 frame_map = LabelFrame(tab3)
-#frame_map.pack(padx = 20, pady = 20)
 frame_map.place(x = 60, y = 60)
 
 #latitud = 19.597111
