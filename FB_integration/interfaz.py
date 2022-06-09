@@ -13,6 +13,7 @@ from gtts import *             # Libreria para convertir texto a audio
 import random
 from matplotlib import artist
 import mutagen
+from mutagen.mp3 import MP3
 # Librerias para mapa -----------------------------
 import tkintermapview
 import geocoder
@@ -34,6 +35,7 @@ import numpy as np
 #import RPi.GPIO as GPIO
 # ibrerias para el telefono y mensajes
 from twilio.rest import Client
+from gtts import gTTS
 
 #os.chdir('FB_integration')
 # Start Tkinter fro the interface
@@ -416,7 +418,7 @@ Button_random = Button(tab2, image = icono_random_sub, borderwidth = 0, cursor='
 Button_random.place(x = 640, y = 290)
 
 
-boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = stop, background = color_tab2).place(x=10, y=10)
+boton_global1 = Button(tab2, image = menu_con_fondo_sub, borderwidth = 0, cursor='hand2', command = travel_global, background = color_tab2).place(x=10, y=10)
 
 # Components of TAB3 -------------------------------------------------------------------------------------
 # Mapa ---------------------------------------------------------------------------------------------------
@@ -563,29 +565,61 @@ def mensaje2():
         body="Logre mandar mensajes mss")
     print(message.sid)
 
+messageList = ["Hola, ¿Cómo estás?", "¿Oye por dónde vienes?"]
+
+language = 'es'
+mesageName1 = "message1.mp3"
+mesageName2 = "message2.mp3"
+
+myobj = gTTS(text= messageList[0], lang=language, slow=False)
+myobj.save(mesageName1)
+
+myobj1 = gTTS(text= messageList[1], lang=language, slow=False)
+myobj1.save(mesageName2)
+
 def mensaje3():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
+    global status
+    
+    songPos = 0
+    pauseSong()
+    songPos = (getSongPos())/1000
+    songPos = songPos
+    pauseSong()
+    
+    # LOAD AND PLAY MASAGE
+    mixer.music.load(mesageName1)
+    audio = MP3(mesageName1)
+    mesageDuration = audio.info.length
+    playSong(True)
+    time.sleep(mesageDuration)
+    
+    # RESUME SONG
+    if (status):
+        setSongPosAndPlay(songList[songIndex],songPos)
+    else:
+        setSongPosAndPause(songList[songIndex],songPos)
 
 def mensaje4():
-    # Your Account SID from twilio.com/console
-    account_sid = "AC1e6d6b8325da4b4406edcf8cbd914d58"
-    # Your Auth Token from twilio.com/console
-    auth_token  = "dd532883b0cfa24ea4591cf66da612f6"
-    client = Client(account_sid, auth_token)
-    message = client.messages.create(
-        to="+525618675785", 
-        from_="+12074924829",
-        body="Logre mandar mensajes mss")
-    print(message.sid)
+    global status
+    
+    songPos = 0
+    pauseSong()
+    songPos = (getSongPos())/1000
+    songPos = songPos
+    pauseSong()
+    
+    # LOAD AND PLAY MASAGE
+    mixer.music.load(mesageName2)
+    audio = MP3(mesageName2)
+    mesageDuration = audio.info.length
+    playSong(True)
+    time.sleep(mesageDuration)
+    
+    # RESUME SONG
+    if (status):
+        setSongPosAndPlay(songList[songIndex],songPos)
+    else:
+        setSongPosAndPause(songList[songIndex],songPos)
 
 
 mensaje_1 = Button(tab5, text= " Mensaje 1 ", borderwidth = 2, cursor='hand2', height="3", width="80",font=('Calibri',10),command = mensaje1, background = color_tab5, fg = text_color).place(x=120, y=80)

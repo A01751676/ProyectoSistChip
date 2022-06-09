@@ -148,4 +148,23 @@ def knowSongEnd():
     else:
         return False
 
+def getSongPos():
+    return mixer.music.get_pos()
+
+def setSongPosAndPlay(song,songPos):
+    mixer.music.load(song)
+    playSong(True)
+    mixer.music.rewind()
+    mixer.music.set_pos(round(songPos))
+    
+def setSongPosAndPause(song,songPos):
+    mixer.music.load(song)
+    playSong(True)
+    mixer.music.rewind()
+    mixer.music.set_pos(round(songPos))
+    mixer.music.pause()
+    
+def repeteOnce(index):
+    return index-1
+
 
